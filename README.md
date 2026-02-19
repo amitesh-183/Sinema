@@ -1,5 +1,4 @@
 # Sinema
-[![Ask DeepWiki](https://devin.ai/assets/askdeepwiki.png)](https://deepwiki.com/amitesh-183/Sinema)
 
 Sinema is a sleek and modern web application for discovering, searching, and exploring an extensive library of movies and TV shows. Built with React, TypeScript, and Vite, it leverages The Movie Database (TMDB) API to provide up-to-date information, including popular, top-rated, and upcoming titles.
 
