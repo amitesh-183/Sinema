@@ -10,6 +10,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Skeleton } from "../ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
+import { ApiList } from "@/types/types";
 
 interface PopularMoviesProps {
   category: string;
@@ -42,7 +43,7 @@ const PopularMovies: React.FC<PopularMoviesProps> = ({ category }) => {
             <p>{error.message}</p> :
             isLoading ? (
               <CarouselContent className="py-14">
-                {movies?.map((item) => (
+                {movies?.map((item: ApiList) => (
                   <CarouselItem
                     key={item.id}
                     className="basis-1/3 xl:basis-40 md:basis-1/6 h-[200px] sm:basis-1/4 hover:scale-105 sm:pl-2 pl-1 duration-300 ease-in-out"
@@ -63,7 +64,7 @@ const PopularMovies: React.FC<PopularMoviesProps> = ({ category }) => {
             ) : (
               <>
                 <CarouselContent className="pt-4">
-                  {movies.map((item) => (
+                  {movies.map((item: ApiList) => (
                     <CarouselItem
                       key={item.id}
                       className="basis-1/3 xl:basis-40 md:basis-1/6 sm:basis-1/4 hover:scale-105 sm:pl-2 pl-1 duration-300 ease-in-out"

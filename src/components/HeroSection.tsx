@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { useSearch } from "@/store/useSearch";
+import { ApiList } from "@/types/types";
 
 type Props = {
   url: string;
@@ -85,7 +86,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
         className="p-0 m-0"
       >
         <CarouselContent>
-          {movies?.map((item) => (
+          {movies?.map((item: ApiList) => (
             <CarouselItem key={item.id} className="p-0 m-0 border-0">
               <div className="">
                 <Card className="border-none">
@@ -146,7 +147,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
       <div className="flex absolute bottom-2 my-3 md:ms-auto md:mx-0 md:w-fit w-full mx-auto md:right-4 z-10">
         <Carousel className="md:max-w-4xl sm:max-w-sm max-w-[300px] md:ms-auto mx-auto">
           <CarouselContent className="pt-10">
-            {movies?.map((item) => (
+            {movies?.map((item: ApiList) => (
               <CarouselItem
                 key={item.id}
                 className="md:basis-1/5 basis-1/3 hover:scale-105 z-30 duration-300 ease-in-out"

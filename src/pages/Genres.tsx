@@ -1,6 +1,9 @@
-import Header from "@/components/Header";
 import { fetchMovies } from "@/services/api.service";
+import { Genre } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
+import React from "react";
+const Header = React.lazy(() => import("@/components/Header"));
+
 
 const Genres = () => {
 
@@ -18,7 +21,7 @@ const Genres = () => {
         <main className="m-4">
           <h1 className="text-2xl font-semibold">Genres</h1>
           <ul className="grid xl:grid-cols-5 grid-cols-2 gap-8 mt-4">
-            {movies?.map((genre) => (
+            {movies?.map((genre: Genre) => (
               <li
                 key={genre.id}
                 className="md:w-[200px] w-full border py-4 px-6 rounded-lg"

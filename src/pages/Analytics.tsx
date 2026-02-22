@@ -1,7 +1,8 @@
-import Donot from "@/components/charts/Donot";
-import FlowChart from "@/components/charts/FlowChart";
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
+import React from "react";
+const Donot = React.lazy(() => import("@/components/charts/Donot"));
+const FlowChart = React.lazy(() => import("@/components/charts/FlowChart"));
+const Sidebar = React.lazy(() => import("@/components/Sidebar"));
+const Header = React.lazy(() => import("@/components/Header"));
 
 const Analytics = () => {
   return (

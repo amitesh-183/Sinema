@@ -13,7 +13,7 @@ export const useTheme = create(
     (set) => ({
       theme: "light",
       setTheme: (theme: Theme) =>
-        set((state) => ({
+        set(() => ({
           theme,
         })),
     }),

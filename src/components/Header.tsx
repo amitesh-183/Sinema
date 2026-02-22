@@ -12,7 +12,7 @@ import {
   Sun,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../favicon-32x32.png";
+// import logo from "../../favicon-32x32.png";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -85,7 +85,7 @@ const Header = ({ extraClasses = "" }) => {
         className={`flex justify-between items-center border-b w-full bg-white/40 dark:bg-black/40 left-0 z-10 md:px-10 px-4 py-2 ${extraClasses}`}
       >
         <Link to={"/"} className="flex gap-1 items-center">
-          <img src={logo} className="w-10 h-10" alt="Sinema-Movie-Icon" />
+          <img src={"favicon-32x32.png"} className="w-10 h-10" alt="Sinema-Movie-Icon" />
           <h3 className="font-black text-3xl tracking-wide md:block hidden">
             Sinema
           </h3>
@@ -105,7 +105,7 @@ const Header = ({ extraClasses = "" }) => {
                   to="#"
                   className="flex items-center gap-2 text-lg font-semibold"
                 >
-                  <img src={logo} alt="blink" className="h-10 w-10" />
+                  <img src={"favicon-32x32.png"} alt="blink" className="h-10 w-10" />
                   <span className="sr-only">Blink</span>
                 </Link>
                 <Link
@@ -155,7 +155,7 @@ const Header = ({ extraClasses = "" }) => {
                       onValueChange={onGenreChange}
                       className="h-[200px] overflow-y-auto"
                     >
-                      {movies?.map((genre) => (
+                      {movies?.map((genre: Genre) => (
                         <DropdownMenuRadioItem
                           key={genre.id}
                           value={genre.id.toString()}
@@ -233,7 +233,7 @@ const Header = ({ extraClasses = "" }) => {
                 onValueChange={onGenreChange}
                 className="h-[200px] overflow-y-auto"
               >
-                {movies?.map((genre) => (
+                {movies?.map((genre: Genre) => (
                   <DropdownMenuRadioItem
                     key={genre.id}
                     value={genre.id.toString()}

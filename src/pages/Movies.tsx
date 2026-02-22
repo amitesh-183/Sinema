@@ -1,7 +1,9 @@
-import Header from "@/components/Header";
-import Main from "@/components/Main";
 import { useGenre } from "@/store/useGenre";
+import React from "react";
 import { useParams } from "react-router-dom";
+
+const Header = React.lazy(() => import("@/components/Header"));
+const Main = React.lazy(() => import("@/components/Main"));
 
 const Movies = () => {
   const { genre } = useParams();

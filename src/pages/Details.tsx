@@ -1,11 +1,12 @@
 import { BsFillPlayFill } from "react-icons/bs";
-import Header from "@/components/Header";
-import { useLocation, useNavigate, useParams, useRoutes } from "react-router-dom";
-import { useMemo, useState, useEffect } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import React, { useMemo, useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Backpack } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+const Header = React.lazy(() => import("@/components/Header"));
+
 
 
 const Details = () => {
@@ -34,7 +35,7 @@ const Details = () => {
   useEffect(() => {
     if (selectedSeason !== null && movies?.seasons) {
       const season = movies.seasons.find(
-        (season) => season.season_number === selectedSeason
+        (season: any) => season.season_number === selectedSeason
       );
       if (season) {
         setEpisodeCount(season.episode_count || 0);

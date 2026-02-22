@@ -5,6 +5,7 @@ import noPoster from "../assets/no-poster.webp";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { ChevronLeft } from "lucide-react";
+import { ApiList } from "@/types/types";
 
 type Props = {
   sectionTitle: string;
@@ -60,7 +61,7 @@ const Main: React.FC<Props> = ({
             </div>
           ) : (
             <div className="grid 2xl:grid-cols-7 xl:grid-cols-6 lg:grid-cols-5 grid-cols-3 md:gap-4 gap-0">
-              {movies.slice(start, effectiveEnd).map((movie) => (
+              {movies.slice(start, effectiveEnd).map((movie: ApiList) => (
                 <div
                   key={movie.id}
                   onClick={() =>

@@ -1,16 +1,18 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import { Home } from "./pages/Home";
-import Search from "./pages/Search";
-import Genres from "./pages/Genres";
-import Community from "./pages/Community";
-import Upload from "./pages/Upload";
-import Analytics from "./pages/Analytics";
-import Movies from "./pages/Movies";
 import "./App.css";
-import Player from "./components/Player";
-import TvShows from "./pages/TvShows";
-import Details from "./pages/Details";
-import Error from "./pages/Error";
+import React from "react";
+
+const Home = React.lazy(() => import("@/pages/Home"));
+const Search = React.lazy(() => import("@/pages/Search"));
+const Genres = React.lazy(() => import("@/pages/Genres"));
+const Community = React.lazy(() => import("@/pages/Community"));
+const Upload = React.lazy(() => import("@/pages/Upload"));
+const Analytics = React.lazy(() => import("@/pages/Analytics"));
+const Movies = React.lazy(() => import("@/pages/Movies"));
+const Player = React.lazy(() => import("@/components/Player"));
+const TvShows = React.lazy(() => import("@/pages/TvShows"));
+const Details = React.lazy(() => import("@/pages/Details"));
+const Error = React.lazy(() => import("@/pages/Error"));
 
 const router = createBrowserRouter([
   {

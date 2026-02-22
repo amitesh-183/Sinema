@@ -1,17 +1,21 @@
-// import Sidebar from "@/components/Sidebar";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
-import HeroSection from "@/components/HeroSection";
-// import MovieGenreList from "@/components/Home/MovieGenreList";
-import PopularMovies from "@/components/Home/PopularMovies";
-import Tv from "@/components/Home/Tv";
 import { AlertTriangle } from "lucide-react";
+import React from "react";
 import Marquee from "react-fast-marquee";
 
-export function Home() {
+const Footer = React.lazy(() => import("@/components/Footer"));
+const Header = React.lazy(() => import("@/components/Header"));
+const HeroSection = React.lazy(() =>
+  import("@/components/HeroSection")
+);
+const PopularMovies = React.lazy(() =>
+  import("@/components/Home/PopularMovies")
+);
+const Tv = React.lazy(() => import("@/components/Home/Tv"));
+
+const Home = () => {
   return (
     <>
-      <Marquee className="w-full absolute top-14 bg-red-500 z-50">
+      <Marquee className="w-full absolute top-16 bg-red-500 z-50">
         <h6 className="flex items-center gap-2">
           <AlertTriangle className="w-5 h-5" />
           Notice: If you can't see movies or get a blank screen, please change
@@ -33,3 +37,5 @@ export function Home() {
     </>
   );
 }
+
+export default Home

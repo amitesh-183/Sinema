@@ -1,13 +1,13 @@
 import { MdManageSearch } from "react-icons/md";
-// import Header from "@/components/Header";
-import Header from "@/components/Header";
-import Main from "@/components/Main";
-import { ChangeEvent } from "react";
+import React, { ChangeEvent } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useSearch } from "@/store/useSearch";
 import { useDebounce } from "@/hooks/useDebounce";
-import { ArrowLeft, ChevronLeft } from "lucide-react";
+import { ChevronLeft } from "lucide-react";
 import { Link } from "react-router-dom";
+
+const Header = React.lazy(() => import("@/components/Header"));
+const Main = React.lazy(() => import("@/components/Main"));
 
 const Search = () => {
   // const { searchQuery, setSearchQuery } = useSearch();

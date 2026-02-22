@@ -1,5 +1,6 @@
-import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
+import React from "react";
+const Header = React.lazy(() => import("@/components/Header"));
+const Sidebar = React.lazy(() => import("@/components/Sidebar"));
 
 const Upload = () => {
   return (

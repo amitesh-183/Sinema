@@ -9,6 +9,7 @@ import { Card, CardContent } from "../ui/card";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
+import { ApiList } from "@/types/types";
 
 const Tv = () => {
   const navigate = useNavigate();
@@ -33,7 +34,7 @@ const Tv = () => {
         </div>
         <Carousel className="">
           <CarouselContent className="pt-4">
-            {movies?.map((item) => (
+            {movies?.map((item: ApiList) => (
               <CarouselItem
                 key={item.id}
                 className="basis-1/3 xl:basis-40 md:basis-1/6 sm:basis-1/4 sm:pl-2 pl-1 hover:scale-105 duration-300 ease-in-out"

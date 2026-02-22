@@ -41,6 +41,7 @@ export interface ApiList {
   origin_country: string[];
   original_language: string;
   original_title: string;
+  media_type: string;
   overview: string;
   popularity: number;
   poster_path: string;
@@ -53,6 +54,7 @@ export interface ApiList {
   status: string;
   tagline: string;
   title: string;
+  name: string;
   video: boolean;
   vote_average: number;
   vote_count: number;
