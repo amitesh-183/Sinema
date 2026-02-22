@@ -1,6 +1,6 @@
 import { BsFillPlayFill } from "react-icons/bs";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, Suspense } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { Button } from "@/components/ui/button";
@@ -46,7 +46,7 @@ const Details = () => {
   }, [selectedSeason, movies]);
 
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Header extraClasses="border-b-0" />
       <div>
         <div className="backdrop-img relative">
@@ -190,7 +190,8 @@ const Details = () => {
           </div>
         </div>
       </div>
-    </>
+    </Suspense>
+
   );
 };
 

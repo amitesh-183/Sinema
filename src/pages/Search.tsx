@@ -1,5 +1,5 @@
 import { MdManageSearch } from "react-icons/md";
-import React, { ChangeEvent } from "react";
+import React, { ChangeEvent, Suspense } from "react";
 import { BiSearch } from "react-icons/bi";
 import { useSearch } from "@/store/useSearch";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -21,7 +21,7 @@ const Search = () => {
     setSearchQuery(e.target.value);
   };
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Header />
       <div className="flex flex-col mt-4 gap-2 justify-center items-center">
         <Link to="/" className="flex gap-4 items-center border py-2 px-4 pl-1.5 rounded-full absolute top-20 left-10"><ChevronLeft size={"20"} />Back</Link>
@@ -63,7 +63,7 @@ const Search = () => {
           </div>
         </>
       )}
-    </>
+    </Suspense>
   );
 };
 

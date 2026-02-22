@@ -1,7 +1,7 @@
 import { fetchMovies } from "@/services/api.service";
 import { Genre } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import React, { Suspense } from "react";
 const Header = React.lazy(() => import("@/components/Header"));
 
 
@@ -15,7 +15,7 @@ const Genres = () => {
 
   const movies = data?.data?.genres;
   return (
-    <>
+    <Suspense fallback={<div>Loading...</div>}>
       <Header />
       <div className="flex flex-col md:px-10 px-4">
         <main className="m-4">
@@ -32,7 +32,8 @@ const Genres = () => {
           </ul>
         </main>
       </div>
-    </>
+    </Suspense>
+
   );
 };
 
