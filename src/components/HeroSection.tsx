@@ -1,6 +1,5 @@
 import { BiSearch } from "react-icons/bi";
 import imdb from "../assets/imdb.svg";
-import { useFetch } from "@/hooks/UseFetch";
 import {
   Carousel,
   CarouselContent,
@@ -13,24 +12,30 @@ import { useRef } from "react";
 import Autoplay from "embla-carousel-autoplay";
 import { Button } from "./ui/button";
 import { useNavigate } from "react-router-dom";
-import { useSearch } from "@/context/Search";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMovies } from "@/services/api.service";
+import { useSearch } from "@/store/useSearch";
 
 type Props = {
-  // sectionTitle: string;
   url: string;
-  // start?: number;
-  // end?: number;
-  // genreId?: number;
 };
 
 const HeroSection: React.FC<Props> = ({ url }) => {
-  const { apiList } = useFetch(url);
+  const { data } = useQuery({
+    queryKey: [url],
+    queryFn: () => fetchMovies(url),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
   const searchRef = useRef(null);
-  // const [showSearch, setShowSearch] = useState(false);
   const navigate = useNavigate();
-  const { searchQuery, setSearchQuery } = useSearch();
+  // const { searchQuery, setSearchQuery } = useSearch();
+
+  const searchQuery = useSearch((state) => state.searchQuery);
+  const setSearchQuery = useSearch((state) => state.setSearchQuery);
+
   const plugin = useRef(Autoplay({ delay: 2000 }));
-  // console.log(apiList);
+
+  const movies = data?.data?.results;
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
@@ -80,7 +85,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
         className="p-0 m-0"
       >
         <CarouselContent>
-          {apiList.map((item) => (
+          {movies?.map((item) => (
             <CarouselItem key={item.id} className="p-0 m-0 border-0">
               <div className="">
                 <Card className="border-none">
@@ -141,7 +146,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
       <div className="flex absolute bottom-2 my-3 md:ms-auto md:mx-0 md:w-fit w-full mx-auto md:right-4 z-10">
         <Carousel className="md:max-w-4xl sm:max-w-sm max-w-[300px] md:ms-auto mx-auto">
           <CarouselContent className="pt-10">
-            {apiList.map((item) => (
+            {movies?.map((item) => (
               <CarouselItem
                 key={item.id}
                 className="md:basis-1/5 basis-1/3 hover:scale-105 z-30 duration-300 ease-in-out"

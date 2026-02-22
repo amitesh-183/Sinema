@@ -1,12 +1,11 @@
 import Header from "@/components/Header";
 import Main from "@/components/Main";
-import { GenreContext } from "@/context/Genre";
-import { useContext } from "react";
+import { useGenre } from "@/store/useGenre";
 import { useParams } from "react-router-dom";
 
 const Movies = () => {
   const { genre } = useParams();
-  const { genres } = useContext(GenreContext);
+  const genres = useGenre((state: any) => state.genres);
   return (
     <div>
       <Header />

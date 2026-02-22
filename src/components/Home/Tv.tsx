@@ -7,11 +7,20 @@ import {
 } from "../ui/carousel";
 import { Card, CardContent } from "../ui/card";
 import { Link, useNavigate } from "react-router-dom";
-import { useFetch } from "@/hooks/UseFetch";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMovies } from "@/services/api.service";
 
 const Tv = () => {
   const navigate = useNavigate();
-  const { apiList } = useFetch("/tv/popular");
+
+  const { data } = useQuery({
+    queryKey: [`/tv/popular`],
+    queryFn: () => fetchMovies(`/tv/popular`),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const movies = data?.data?.results;
+
   return (
     <div>
       {/*  */}
@@ -24,7 +33,7 @@ const Tv = () => {
         </div>
         <Carousel className="">
           <CarouselContent className="pt-4">
-            {apiList.map((item) => (
+            {movies?.map((item) => (
               <CarouselItem
                 key={item.id}
                 className="basis-1/3 xl:basis-40 md:basis-1/6 sm:basis-1/4 sm:pl-2 pl-1 hover:scale-105 duration-300 ease-in-out"
@@ -55,7 +64,6 @@ const Tv = () => {
           <CarouselNext className="-right-5 top-1/2 md:flex hidden" />
         </Carousel>
       </div>
-      {/*  */}
     </div>
   );
 };

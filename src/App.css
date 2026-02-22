@@ -58,6 +58,10 @@
   padding: 16px 26px 16px 26px;
 }
 
+.searchInput:focus-within {
+  outline: none !important;
+}
+
 .board {
   position: absolute;
   top: 50%;
@@ -66,19 +70,30 @@
   width: 500px;
   margin: -75px 0 0 -250px;
   padding: 20px;
-  font: 75px/75px Monoton, cursive;
+  font:
+    75px/75px Monoton,
+    cursive;
   text-align: center;
   font-weight: 900;
   text-transform: uppercase;
-  text-shadow: 0 0 80px red, 0 0 30px FireBrick, 0 0 6px DarkRed;
+  text-shadow:
+    0 0 80px red,
+    0 0 30px FireBrick,
+    0 0 6px DarkRed;
   color: red;
 }
 
 #error {
   color: #fff;
-  text-shadow: 0 0 80px #ffffff, 0 0 30px #008000, 0 0 6px #0000ff;
+  text-shadow:
+    0 0 80px #ffffff,
+    0 0 30px #008000,
+    0 0 6px #0000ff;
 }
 .dark #error {
   color: #000000;
-  text-shadow: 0 0 80px #ffffff, 0 0 30px #008000, 0 0 6px #0000ff;
+  text-shadow:
+    0 0 80px #ffffff,
+    0 0 30px #008000,
+    0 0 6px #0000ff;
 }

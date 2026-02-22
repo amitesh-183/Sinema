@@ -3,39 +3,30 @@ import { BiSearch } from "react-icons/bi";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import { Button } from "./ui/button";
 import {
-  // Bell,
   ChevronDown,
-  // CircleUser,
   Film,
   Home,
-  // LineChart,
   Menu,
   Search,
   Moon,
-  // ShoppingCart,
   Sun,
-  // Users,
 } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import logo from "../../favicon-32x32.png";
-// import { Badge } from "./ui/badge";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  // DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  // DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { useTheme } from "@/context/ThemeProvider";
-import { useState } from "react";
-import { useGenres } from "@/context/Genre";
+import { useEffect, useState } from "react";
 import { Separator } from "./ui/separator";
-// import useFetch from "@/hooks/UseFetch";
-import { useGenre } from "@/hooks/useGenre";
-// import { useEffect } from "react";
+import { useTheme } from "@/store/useThemeStore";
+import { useQuery } from "@tanstack/react-query";
+import { fetchMovies } from "@/services/api.service";
+import { useGenre } from "@/store/useGenre";
 
 interface Genre {
   id: number;
@@ -43,33 +34,61 @@ interface Genre {
 }
 
 const Header = ({ extraClasses = "" }) => {
-  const { setTheme } = useTheme();
+  const theme = useTheme((state: any) => state.theme);
+  const setTheme = useTheme((state: any) => state.setTheme);
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [genreName, setGenreName] = useState<string | undefined>(undefined);
-  const { genres, setGenres } = useGenres();
-  const { apiList } = useGenre("/genre/movie/list?language=en");
+  // const { genres, setGenres } = useGenres();
+
+  const genres = useGenre((state: any) => state.genres);
+  const setGenres = useGenre((state: any) => state.setGenreId);
+
+  const { data } = useQuery({
+    queryKey: ["/genre/movie/list?language=en"],
+    queryFn: () => fetchMovies(`/genre/movie/list?language=en`),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  })
+
+  const movies = data?.data?.genres;
 
   const onGenreChange = (value: string) => {
     const genreId = Number(value);
     setGenres(genreId);
-    const selectedGenre = apiList?.find(
+    const selectedGenre = movies?.find(
       (genre: Genre) => genre.id === genreId
     )?.name;
     setGenreName(selectedGenre);
     navigate(`/movies/${selectedGenre}`);
   };
   // console.log(genres);
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    if (theme === "system") {
+      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
+        .matches
+        ? "dark"
+        : "light";
+
+      root.classList.remove("dark", "light");
+      root.classList.add(systemTheme);
+      return;
+    }
+    root.classList.remove("dark", "light");
+    root.classList.add(theme);
+  }, [theme])
   return (
     <>
       <div
-        className={`flex justify-between items-center border-b dark:text-white w-full left-0 z-10 md:px-10 px-4 py-2 ${extraClasses}`}
+        className={`flex justify-between items-center border-b w-full bg-white/40 dark:bg-black/40 left-0 z-10 md:px-10 px-4 py-2 ${extraClasses}`}
       >
         <Link to={"/"} className="flex gap-1 items-center">
+          <img src={logo} className="w-10 h-10" alt="Sinema-Movie-Icon" />
           <h3 className="font-black text-3xl tracking-wide md:block hidden">
             Sinema
           </h3>
-          <img src={logo} className="w-10 h-10" alt="Sinema-Movie-Icon" />
         </Link>
         <div className="flex gap-4 items-center">
           <Search className="md:hidden" />
@@ -91,58 +110,30 @@ const Header = ({ extraClasses = "" }) => {
                 </Link>
                 <Link
                   to="/"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                    pathname.endsWith("/")
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  } transition-all hover:text-primary`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${pathname.endsWith("/")
+                    ? "text-primary bg-muted"
+                    : "text-muted-foreground"
+                    } transition-all hover:text-primary`}
                 >
                   <Home className="h-4 w-4" />
                   Home
                 </Link>
-                {/* <Link
-                  to="/genres"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                    pathname.includes("genres")
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  } transition-all hover:text-primary`}
-                >
-                  <ShoppingCart className="h-4 w-4" />
-                  Genres
-                  <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                    6
-                  </Badge>
-                </Link> */}
-                {/* <Link
-                to="/upload"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                  pathname.includes("upload")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                } transition-all hover:text-primary`}
-              >
-                <Film className="h-4 w-4" />
-                Your Movie{" "}
-              </Link> */}
                 <Link
                   to="/movies"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                    pathname.includes("movie")
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  } transition-all hover:text-primary`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${pathname.includes("movie")
+                    ? "text-primary bg-muted"
+                    : "text-muted-foreground"
+                    } transition-all hover:text-primary`}
                 >
                   <Film className="h-4 w-4" />
                   Movie
                 </Link>
                 <Link
                   to="/tv-series"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                    pathname.includes("tv")
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  } transition-all hover:text-primary`}
+                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${pathname.includes("tv")
+                    ? "text-primary bg-muted"
+                    : "text-muted-foreground"
+                    } transition-all hover:text-primary`}
                 >
                   <Film className="h-4 w-4" />
                   Tv Shows
@@ -159,13 +150,12 @@ const Header = ({ extraClasses = "" }) => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-auto">
-                    {/* <DropdownMenuSeparator /> */}
                     <DropdownMenuRadioGroup
                       value={genres?.toString()}
                       onValueChange={onGenreChange}
                       className="h-[200px] overflow-y-auto"
                     >
-                      {apiList.map((genre) => (
+                      {movies?.map((genre) => (
                         <DropdownMenuRadioItem
                           key={genre.id}
                           value={genre.id.toString()}
@@ -200,28 +190,6 @@ const Header = ({ extraClasses = "" }) => {
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-                {/* <Link
-                  to="/community"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                    pathname.includes("community")
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  } transition-all hover:text-primary`}
-                >
-                  <Users className="h-4 w-4" />
-                  Community
-                </Link> */}
-                {/* <Link
-                  to="/analytics"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                    pathname.includes("analytics")
-                      ? "text-primary bg-muted"
-                      : "text-muted-foreground"
-                  } transition-all hover:text-primary`}
-                >
-                  <LineChart className="h-4 w-4" />
-                  Analytics
-                </Link> */}
               </nav>
             </SheetContent>
           </Sheet>
@@ -229,26 +197,22 @@ const Header = ({ extraClasses = "" }) => {
         <div className="md:flex hidden gap-8 items-center text-xl">
           <Link
             to={"/"}
-            className={`${
-              pathname.endsWith("/") ? "text-pink-600 font-bold" : ""
-            }`}
+            className={`${pathname.endsWith("/") ? "text-pink-600 font-bold" : ""
+              }`}
           >
             Home
           </Link>
-          {/* <Link to={"/genres"}>Genre</Link> */}
           <Link
             to={"/movies"}
-            className={`${
-              pathname.includes("/movies") ? "text-pink-600 font-bold" : ""
-            }`}
+            className={`${pathname.includes("/movies") ? "text-pink-600 font-bold" : ""
+              }`}
           >
             Movie
           </Link>
           <Link
             to={"/tv-series"}
-            className={`${
-              pathname.includes("/tv") ? "text-pink-600 font-bold" : ""
-            }`}
+            className={`${pathname.includes("/tv") ? "text-pink-600 font-bold" : ""
+              }`}
           >
             TV Series
           </Link>
@@ -269,7 +233,7 @@ const Header = ({ extraClasses = "" }) => {
                 onValueChange={onGenreChange}
                 className="h-[200px] overflow-y-auto"
               >
-                {apiList.map((genre) => (
+                {movies?.map((genre) => (
                   <DropdownMenuRadioItem
                     key={genre.id}
                     value={genre.id.toString()}
@@ -284,13 +248,6 @@ const Header = ({ extraClasses = "" }) => {
           <Link to={""} className="mt-2">
             <BiSearch size={24} onClick={() => navigate("/search")} />
           </Link>
-          {/* <Link to="#" className="text-lg font-semibold">
-            Community
-          </Link> */}
-          {/* <Button variant="outline" size="icon" className="ml-auto h-8 w-12">
-            <Bell className="h-4 w-4" />
-            <span className="sr-only">Toggle notifications</span>
-          </Button> */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="outline" className="border-none" size="icon">
@@ -311,22 +268,6 @@ const Header = ({ extraClasses = "" }) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          {/* <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
-                <CircleUser className="h-5 w-10" />
-                <span className="sr-only">Toggle user menu</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Settings</DropdownMenuItem>
-              <DropdownMenuItem>Support</DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu> */}
         </div>
       </div>
     </>

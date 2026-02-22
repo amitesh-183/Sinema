@@ -2,12 +2,21 @@ import { MdManageSearch } from "react-icons/md";
 // import Header from "@/components/Header";
 import Header from "@/components/Header";
 import Main from "@/components/Main";
-import { useSearch } from "@/context/Search";
 import { ChangeEvent } from "react";
 import { BiSearch } from "react-icons/bi";
+import { useSearch } from "@/store/useSearch";
+import { useDebounce } from "@/hooks/useDebounce";
+import { ArrowLeft, ChevronLeft } from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Search = () => {
-  const { searchQuery, setSearchQuery } = useSearch();
+  // const { searchQuery, setSearchQuery } = useSearch();
+
+  const searchQuery = useSearch((state) => state.searchQuery);
+  const setSearchQuery = useSearch((state) => state.setSearchQuery);
+
+  const debounceQuery = useDebounce(searchQuery, 500);
+
   const handleSearchInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
@@ -15,7 +24,8 @@ const Search = () => {
     <>
       <Header />
       <div className="flex flex-col mt-4 gap-2 justify-center items-center">
-        {/* <h2 className="text-4xl font-bold">Blink Search</h2> */}
+        <Link to="/" className="flex gap-4 items-center border py-2 px-4 pl-1.5 rounded-full absolute top-20 left-10"><ChevronLeft size={"20"} />Back</Link>
+        <h2 className="text-4xl font-bold">Blink Search</h2>
         <div className="searchBox">
           <input
             className="searchInput"
@@ -28,7 +38,7 @@ const Search = () => {
           <button
             title="search"
             className="searchButton"
-            // onClick={handleSearch}
+          // onClick={handleSearch}
           >
             <BiSearch className="w-7 h-7 translate-x-1" />
           </button>
@@ -37,11 +47,11 @@ const Search = () => {
       {/* <h4 className="px-10 font-semibold text-2xl">
         Search Results for : {searchQuery}
       </h4> */}
-      {searchQuery ? (
+      {debounceQuery ? (
         <Main
-          sectionTitle={`Search Results for ${searchQuery}`}
+          sectionTitle={`Search Results for ${debounceQuery}`}
           url="/search/multi"
-          searchQuery={searchQuery !== null ? searchQuery : undefined}
+          searchQuery={debounceQuery}
         />
       ) : (
         <>
