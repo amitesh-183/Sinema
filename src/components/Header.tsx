@@ -1,275 +1,253 @@
-import { BiCategory } from "react-icons/bi";
-import { BiSearch } from "react-icons/bi";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Button } from "./ui/button";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   ChevronDown,
+  Clapperboard,
   Film,
   Home,
   Menu,
-  Search,
   Moon,
+  Search,
   Sun,
+  Tv,
+  X,
 } from "lucide-react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import logo from "../../favicon-32x32.png";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuRadioGroup,
-  DropdownMenuRadioItem,
-  DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { useEffect, useState } from "react";
-import { Separator } from "./ui/separator";
-import { useTheme } from "@/store/useThemeStore";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { useGenre } from "@/store/useGenre";
+import { useTheme } from "@/store/useThemeStore";
+import { cn } from "@/lib/utils";
 
 interface Genre {
   id: number;
   name: string;
 }
 
-const Header = ({ extraClasses = "" }) => {
-  const theme = useTheme((state: any) => state.theme);
-  const setTheme = useTheme((state: any) => state.setTheme);
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
-  const [genreName, setGenreName] = useState<string | undefined>(undefined);
-  // const { genres, setGenres } = useGenres();
+const NAV_LINKS = [
+  { to: "/", label: "Home", icon: Home, match: (p: string) => p === "/" },
+  { to: "/movies", label: "Movies", icon: Film, match: (p: string) => p.includes("/movies") || p.includes("/movie-info") },
+  { to: "/tv-series", label: "TV Shows", icon: Tv, match: (p: string) => p.includes("/tv") },
+];
 
-  const genres = useGenre((state: any) => state.genres);
-  const setGenres = useGenre((state: any) => state.setGenreId);
+const GenreMenu = ({ onNavigate }: { onNavigate?: () => void }) => {
+  const navigate = useNavigate();
+  const setGenres = useGenre((state) => state.setGenreId);
+  const [open, setOpen] = useState(false);
 
   const { data } = useQuery({
     queryKey: ["/genre/movie/list?language=en"],
-    queryFn: () => fetchMovies(`/genre/movie/list?language=en`),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  })
+    queryFn: () => fetchMovies("/genre/movie/list?language=en"),
+    staleTime: 5 * 60 * 1000,
+  });
 
   const movies = data?.data?.genres;
 
-  const onGenreChange = (value: string) => {
-    const genreId = Number(value);
-    setGenres(genreId);
-    const selectedGenre = movies?.find(
-      (genre: Genre) => genre.id === genreId
-    )?.name;
-    setGenreName(selectedGenre);
-    navigate(`/movies/${selectedGenre}`);
-  };
-  // console.log(genres);
+  return (
+    <div
+      className="relative"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+    >
+      <button className="inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors hover:bg-white/10">
+        Genres
+        <ChevronDown
+          className={cn("h-4 w-4 transition-transform", open && "rotate-180")}
+        />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="glass absolute left-0 top-full z-50 mt-2 w-52 rounded-2xl border border-white/10 p-2"
+          >
+            <div className="max-h-[300px] overflow-y-auto pr-1">
+              {movies?.map((genre: Genre) => (
+                <button
+                  key={genre.id}
+                  onClick={() => {
+                    setGenres(genre.id);
+                    navigate(`/movies/${genre.name}`);
+                    onNavigate?.();
+                  }}
+                  className="block w-full rounded-lg px-3 py-2 text-left text-sm text-muted-foreground transition-colors hover:bg-white/10 hover:text-foreground"
+                >
+                  {genre.name}
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const ThemeMenu = () => {
+  const theme = useTheme((state) => state.theme);
+  const setTheme = useTheme((state) => state.setTheme);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const root = document.documentElement;
-
-    if (theme === "system") {
-      const systemTheme = window.matchMedia("(prefers-color-scheme: dark)")
-        .matches
-        ? "dark"
-        : "light";
-
-      root.classList.remove("dark", "light");
-      root.classList.add(systemTheme);
-      return;
-    }
     root.classList.remove("dark", "light");
-    root.classList.add(theme);
-  }, [theme])
+    if (theme === "system") {
+      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      root.classList.add(systemDark ? "dark" : "light");
+    } else {
+      root.classList.add(theme);
+    }
+  }, [theme]);
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen((o) => !o)}
+        aria-label="Toggle theme"
+        className="relative flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+      >
+        <Sun className="absolute h-4 w-4 rotate-0 scale-100 text-amber-300 transition-all dark:-rotate-90 dark:scale-0" />
+        <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: 10, scale: 0.97 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 10, scale: 0.97 }}
+            transition={{ duration: 0.15 }}
+            className="glass absolute right-0 top-full z-50 mt-2 w-36 rounded-2xl border border-white/10 p-1.5"
+          >
+            {(["light", "dark", "system"] as const).map((t) => (
+              <button
+                key={t}
+                onClick={() => {
+                  setTheme(t);
+                  setOpen(false);
+                }}
+                className={cn(
+                  "block w-full rounded-xl px-3 py-2 text-left text-sm capitalize transition-colors",
+                  theme === t
+                    ? "bg-brand-gradient font-semibold text-white"
+                    : "text-muted-foreground hover:bg-white/10"
+                )}
+              >
+                {t}
+              </button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
+const Header = ({ extraClasses = "" }) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   return (
     <>
-      <div
-        className={`flex justify-between items-center border-b w-full bg-white/40 dark:bg-black/40 z-10 md:px-10 px-4 py-2 ${extraClasses}`}
+      <header
+        className={cn(
+          "glass sticky top-0 z-50 flex w-full items-center justify-between border-b border-white/10 px-4 py-3 md:px-10",
+          extraClasses
+        )}
       >
-        <Link to={"/"} className="flex gap-1 items-center">
-          <img src={logo} className="w-10 h-10" alt="Sinema-Movie-Icon" />
-          <h3 className="font-black text-3xl tracking-wide md:block hidden">
-            Sinema
-          </h3>
+        <Link to="/" className="group flex items-center gap-2">
+          <div className="animate-pulse-ring rounded-xl bg-brand-gradient p-1.5 transition-transform group-hover:rotate-6">
+            <Clapperboard className="h-6 w-6 text-white" />
+          </div>
+          <span className="font-display hidden text-xl font-bold tracking-tight md:block">
+            Sine<span className="text-gradient">ma</span>
+          </span>
         </Link>
-        <div className="flex gap-4 items-center">
-          <Search className="md:hidden" />
-          <Sheet>
-            <SheetTrigger asChild className="md:hidden">
-              <Button variant="outline" size="icon" className="shrink-0">
-                <Menu className="h-5 w-5" />
-                <span className="sr-only">Toggle navigation menu</span>
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="flex flex-col">
-              <nav className="grid gap-2 text-lg font-medium">
-                <Link
-                  to="#"
-                  className="flex items-center gap-2 text-lg font-semibold"
-                >
-                  <img src={logo} alt="blink" className="h-10 w-10" />
-                  <span className="sr-only">Blink</span>
-                </Link>
-                <Link
-                  to="/"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${pathname.endsWith("/")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                    } transition-all hover:text-primary`}
-                >
-                  <Home className="h-4 w-4" />
-                  Home
-                </Link>
-                <Link
-                  to="/movies"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${pathname.includes("movie")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                    } transition-all hover:text-primary`}
-                >
-                  <Film className="h-4 w-4" />
-                  Movie
-                </Link>
-                <Link
-                  to="/tv-series"
-                  className={`flex items-center gap-3 rounded-lg px-3 py-2 ${pathname.includes("tv")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                    } transition-all hover:text-primary`}
-                >
-                  <Film className="h-4 w-4" />
-                  Tv Shows
-                </Link>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="text-lg hover:bg-transparent text-muted-foreground p-0 font-semibold justify-start ps-3"
-                    >
-                      <BiCategory className="mr-3" />
-                      Genres
-                      <ChevronDown size={14} className="mt-2 ms-1" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-auto">
-                    <DropdownMenuRadioGroup
-                      value={genres?.toString()}
-                      onValueChange={onGenreChange}
-                      className="h-[200px] overflow-y-auto"
-                    >
-                      {movies?.map((genre: Genre) => (
-                        <DropdownMenuRadioItem
-                          key={genre.id}
-                          value={genre.id.toString()}
-                        >
-                          <span>{genre.name}</span>
-                        </DropdownMenuRadioItem>
-                      ))}
-                    </DropdownMenuRadioGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild className="w-full flex gap-2">
-                    <Button
-                      size="icon"
-                      className="justify-start ps-11 text-lg font-semibold bg-transparent text-muted-foreground"
-                    >
-                      <Sun className="h-[1.2rem] w-[1.2rem] absolute left-10 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                      <Moon className="absolute h-[1.2rem] w-[1.2rem] left-10 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                      <span className="sr-only">Toggle theme</span>
-                      Theme
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="w-[190px]">
-                    <DropdownMenuItem onClick={() => setTheme("light")}>
-                      Light
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTheme("dark")}>
-                      Dark
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => setTheme("system")}>
-                      System
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </nav>
-            </SheetContent>
-          </Sheet>
-        </div>
-        <div className="md:flex hidden gap-8 items-center text-xl">
-          <Link
-            to={"/"}
-            className={`${pathname.endsWith("/") ? "text-pink-600 font-bold" : ""
-              }`}
-          >
-            Home
-          </Link>
-          <Link
-            to={"/movies"}
-            className={`${pathname.includes("/movies") ? "text-pink-600 font-bold" : ""
-              }`}
-          >
-            Movie
-          </Link>
-          <Link
-            to={"/tv-series"}
-            className={`${pathname.includes("/tv") ? "text-pink-600 font-bold" : ""
-              }`}
-          >
-            TV Series
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                className="text-xl hover:bg-transparent p-0 font-normal"
+
+        <nav className="hidden items-center gap-1 md:flex">
+          {NAV_LINKS.map(({ to, label, icon: Icon, match }) => {
+            const active = match(pathname);
+            return (
+              <Link
+                key={to}
+                to={to}
+                className={cn(
+                  "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors",
+                  active
+                    ? "text-white"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                {genreName || "Genres"}
-                <ChevronDown size={14} className="mt-2 ms-1" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-auto">
-              {/* <DropdownMenuSeparator /> */}
-              <DropdownMenuRadioGroup
-                value={genres?.toString()}
-                onValueChange={onGenreChange}
-                className="h-[200px] overflow-y-auto"
-              >
-                {movies?.map((genre: Genre) => (
-                  <DropdownMenuRadioItem
-                    key={genre.id}
-                    value={genre.id.toString()}
-                  >
-                    <span>{genre.name}</span>
-                  </DropdownMenuRadioItem>
-                ))}
-              </DropdownMenuRadioGroup>
-            </DropdownMenuContent>
-          </DropdownMenu>
-          <Separator orientation="vertical" className="w-0.5 mt-2 h-6" />
-          <Link to={""} className="mt-2">
-            <BiSearch size={24} onClick={() => navigate("/search")} />
-          </Link>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" className="border-none" size="icon">
-                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                <Moon className="absolute h-[1.4rem] w-[1.4rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                <span className="sr-only">Toggle theme</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme("light")}>
-                Light
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("dark")}>
-                Dark
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme("system")}>
-                System
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+                {active && (
+                  <motion.span
+                    layoutId="nav-pill"
+                    className="absolute inset-0 rounded-full bg-brand-gradient"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+                <Icon className="relative z-10 h-4 w-4" />
+                <span className="relative z-10">{label}</span>
+              </Link>
+            );
+          })}
+          <GenreMenu />
+        </nav>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => navigate("/search")}
+            aria-label="Search"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+          >
+            <Search className="h-4 w-4" />
+          </button>
+          <ThemeMenu />
+          <button
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label="Toggle menu"
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10 md:hidden"
+          >
+            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
-      </div>
+      </header>
+
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.18 }}
+            className="glass fixed inset-x-3 top-16 z-40 rounded-2xl border border-white/10 p-3 md:hidden"
+          >
+            <nav className="flex flex-col gap-1">
+              {NAV_LINKS.map(({ to, label, icon: Icon, match }) => (
+                <Link
+                  key={to}
+                  to={to}
+                  onClick={() => setMobileOpen(false)}
+                  className={cn(
+                    "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors",
+                    match(pathname)
+                      ? "bg-brand-gradient text-white"
+                      : "text-muted-foreground hover:bg-white/10"
+                  )}
+                >
+                  <Icon className="h-4 w-4" />
+                  {label}
+                </Link>
+              ))}
+              <div className="mt-1 border-t border-white/10 pt-2">
+                <GenreMenu onNavigate={() => setMobileOpen(false)} />
+              </div>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </>
   );
 };

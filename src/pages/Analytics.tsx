@@ -1,18 +1,26 @@
-import React, { Suspense } from "react";
-const Donot = React.lazy(() => import("@/components/charts/Donot"));
-const FlowChart = React.lazy(() => import("@/components/charts/FlowChart"));
-const Sidebar = React.lazy(() => import("@/components/Sidebar"));
-const Header = React.lazy(() => import("@/components/Header"));
+import { lazy, Suspense } from "react";
+import { PageLoader } from "@/components/Loader";
+import PageHero from "@/components/PageHero";
+
+const Donot = lazy(() => import("@/components/charts/Donot"));
+const FlowChart = lazy(() => import("@/components/charts/FlowChart"));
+const Sidebar = lazy(() => import("@/components/Sidebar"));
+const Header = lazy(() => import("@/components/Header"));
 
 const Analytics = () => {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
+    <Suspense fallback={<PageLoader />}>
+      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[260px_1fr]">
         <Sidebar />
         <div className="flex flex-col">
           <Header />
-          <main>
-            <div className="grid md:grid-cols-2 grid-cols-1 gap-6 px-8 my-4">
+          <main className="flex-1 px-6 py-8">
+            <PageHero
+              badge="Insights"
+              title="Analytics"
+              description="Visualize what the world is watching."
+            />
+            <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
               <FlowChart />
               <Donot />
             </div>

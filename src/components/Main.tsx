@@ -1,11 +1,13 @@
-import { Skeleton } from "@/components/ui/skeleton";
-import React from "react";
+import { motion } from "framer-motion";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import noPoster from "../assets/no-poster.webp";
+import { ChevronLeft } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
-import { ChevronLeft } from "lucide-react";
 import { ApiList } from "@/types/types";
+import { MovieGridSkeleton } from "@/components/Loader";
+import MovieCard from "@/components/MovieCard";
+import Pagination from "@/components/Pagination";
 
 type Props = {
   sectionTitle: string;
@@ -24,46 +26,73 @@ const Main: React.FC<Props> = ({
   start = 0,
   end,
 }) => {
+  const [page, setPage] = useState(1);
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: [url, genreId, searchQuery],
-    queryFn: () => fetchMovies(url, genreId, searchQuery),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  })
+  const { data, isLoading, isError, isFetching } = useQuery({
+    queryKey: [url, genreId, searchQuery, page],
+    queryFn: () => fetchMovies(url, genreId, searchQuery, page),
+    staleTime: 5 * 60 * 1000,
+  });
 
   const movies = data?.data?.results;
-
+  const totalPages = Math.min(data?.data?.total_pages ?? 1, 500);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const effectiveEnd = end !== undefined ? end : movies?.length;
+  const effectiveEnd = end ?? movies?.length;
+
+  useEffect(() => {
+    setPage(1);
+  }, [url, genreId, searchQuery]);
+
+  const handlePageChange = (nextPage: number) => {
+    setPage(nextPage);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   return (
-    <main className="flex flex-1 flex-col md:p-4 p-2 lg:p-6 w-full">
-      <div className="flex items-center">
-        <Link to="/" className="mr-1 mt-1"><ChevronLeft /></Link>
-        <h1 className="text-lg font-semibold md:text-2xl">{sectionTitle}</h1>
+    <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 py-6 md:px-10">
+      <div className="mb-6 flex items-center gap-3">
+        <Link
+          to="/"
+          aria-label="Back to home"
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+        >
+          <ChevronLeft className="h-4 w-4" />
+        </Link>
+        <h1 className="font-display text-xl font-bold tracking-tight md:text-2xl">
+          {sectionTitle}
+        </h1>
+        {!isLoading && !isError && data?.data?.total_results ? (
+          <span className="rounded-full bg-white/5 px-3 py-1 text-xs text-muted-foreground">
+            {data.data.total_results.toLocaleString()} titles
+          </span>
+        ) : null}
       </div>
-      <div>
-        {isError ? <p>{error.message}</p>
-          : isLoading ? (
-            <div className="grid 2xl:grid-cols-7 xl:grid-cols-6 lg:grid-cols-5 grid-cols-3 md:gap-4 gap-0">
-              {new Array(10 - start).fill(null).map((_, index) => (
-                <div
-                  key={index}
-                  className="p-2 border border-slate-800/20 shadow-xl rounded-xl"
-                >
-                  <Skeleton className="w-full md:h-[300px] h-[160px]" />
-                  <h4 className="font-bold text-xl text-ellipsis text-nowrap w-full overflow-hidden py-4">
-                    <Skeleton className="h-4 w-full" />
-                  </h4>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="grid 2xl:grid-cols-7 xl:grid-cols-6 lg:grid-cols-5 grid-cols-3 md:gap-4 gap-0">
-              {movies.slice(start, effectiveEnd).map((movie: ApiList) => (
-                <div
-                  key={movie.id}
+
+      {isError ? (
+        <div className="flex flex-col items-center gap-3 py-24 text-center">
+          <p className="text-muted-foreground">
+            Couldn't load titles right now.
+          </p>
+        </div>
+      ) : isLoading ? (
+        <MovieGridSkeleton count={12} />
+      ) : (
+        <>
+          <div
+            className={`grid grid-cols-3 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 ${
+              isFetching ? "opacity-50 transition-opacity" : ""
+            }`}
+          >
+            {movies?.slice(start, effectiveEnd).map((movie: ApiList, i: number) => (
+              <motion.div
+                key={movie.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.6) }}
+              >
+                <MovieCard
+                  movie={movie}
                   onClick={() =>
                     navigate(
                       `/${pathname.includes("/tv") || movie.media_type === "tv"
@@ -72,26 +101,18 @@ const Main: React.FC<Props> = ({
                       }-info/${movie.id}`
                     )
                   }
-                  className=" hover:brightness-125 scale-[0.99] hover:scale-[1] duration-300 py-2 px-1 rounded-xl"
-                >
-                  <img
-                    className=" w-full 2xl:h-full xl:h-[300px] lg:h-[280px] object-cover md:h-[360px] sm:h-[300px] h-[160px]"
-                    src={`${movie.poster_path
-                      ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                      : noPoster
-                      }`}
-                    alt={movie.title || movie.name}
-                  />
-                  <div className="px-2 w-full">
-                    <h4 className="font-semibold text-base py-2 text-ellipsis text-nowrap overflow-hidden">
-                      {url.includes("tv") ? movie.name : movie.title}
-                    </h4>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-      </div>
+                />
+              </motion.div>
+            ))}
+          </div>
+
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onChange={handlePageChange}
+          />
+        </>
+      )}
     </main>
   );
 };

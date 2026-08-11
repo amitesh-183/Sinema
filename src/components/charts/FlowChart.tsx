@@ -26,13 +26,13 @@ const data: DataPoint[] = [
 
 const FlowChart = () => {
   useLayoutEffect(() => {
-    let root = am5.Root.new("chartdiv");
+    const root = am5.Root.new("chartdiv");
     if (root._logo) {
       root._logo.dispose();
     }
     root.setThemes([am5themes_Animated.new(root)]);
 
-    let chart = root.container.children.push(
+    const chart = root.container.children.push(
       am5xy.XYChart.new(root, {
         panX: true,
         panY: true,
@@ -58,7 +58,7 @@ const FlowChart = () => {
       })
     );
 
-    let cursor = chart.set(
+    const cursor = chart.set(
       "cursor",
       am5xy.XYCursor.new(root, {
         behavior: "none",
@@ -66,7 +66,7 @@ const FlowChart = () => {
     );
     cursor.lineY.set("visible", false);
 
-    let xAxis = chart.xAxes.push(
+    const xAxis = chart.xAxes.push(
       am5xy.CategoryAxis.new(root, {
         categoryField: "month",
         startLocation: 0.5,
@@ -81,7 +81,7 @@ const FlowChart = () => {
 
     xAxis.data.setAll(data);
 
-    let yAxis = chart.yAxes.push(
+    const yAxis = chart.yAxes.push(
       am5xy.ValueAxis.new(root, {
         renderer: am5xy.AxisRendererY.new(root, {}),
       })
@@ -93,7 +93,7 @@ const FlowChart = () => {
       color: am5.Color,
       strokeColor: am5.Color
     ) {
-      let series = chart.series.push(
+      const series = chart.series.push(
         am5xy.SmoothedXLineSeries.new(root, {
           name: name,
           xAxis: xAxis,
@@ -147,8 +147,9 @@ const FlowChart = () => {
   }, []);
 
   return (
-    <div className="px-4 py-6 col-span-1 shadow-[0px_0px_10px_#ccc]">
-      <div id="chartdiv" className="w-full h-[280px]"></div>
+    <div className="card-glass col-span-1 rounded-2xl px-4 py-6">
+      <h1 className="mb-2 text-lg font-semibold">Watch Traffic</h1>
+      <div id="chartdiv" className="h-[280px] w-full"></div>
     </div>
   );
 };

@@ -1,91 +1,66 @@
+import { motion } from "framer-motion";
 import {
-  Home,
-  ShoppingCart,
-  Users,
-  LineChart,
   Clapperboard,
+  Compass,
   Film,
+  LineChart,
+  Upload,
+  Users,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { Badge } from "./ui/badge";
+import { cn } from "@/lib/utils";
+
+const LINKS = [
+  { to: "/", label: "Browse", icon: Compass, match: (p: string) => p === "/" },
+  { to: "/genres", label: "Genres", icon: Film, match: (p: string) => p.includes("/genres") },
+  { to: "/upload", label: "Your Movies", icon: Upload, match: (p: string) => p.includes("/upload") },
+  { to: "/community", label: "Community", icon: Users, match: (p: string) => p.includes("/community") },
+  { to: "/analytics", label: "Analytics", icon: LineChart, match: (p: string) => p.includes("/analytics") },
+];
 
 const Sidebar = () => {
   const { pathname } = useLocation();
   return (
-    <>
-      <div className="hidden border-r bg-muted/40 md:block">
-        <div className="flex h-full max-h-screen flex-col gap-2 sticky top-0">
-          <div className="flex h-14 items-center border-b px-4 lg:h-[60px] lg:px-6">
-            <Link to="/" className="flex items-center gap-2 font-semibold">
-              <Clapperboard className="h-6 w-6" />
-              <span className="">Sinema</span>
-            </Link>
+    <aside className="sticky top-0 hidden h-screen border-r border-white/10 bg-card/40 backdrop-blur-sm md:block">
+      <div className="flex h-full flex-col gap-2 px-3 py-4">
+        <Link
+          to="/"
+          className="mb-4 flex items-center gap-2 px-2 font-display text-lg font-bold"
+        >
+          <div className="rounded-xl bg-brand-gradient p-1.5">
+            <Clapperboard className="h-5 w-5 text-white" />
           </div>
-          <div className="flex-1">
-            <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
+          Sine<span className="text-gradient">ma</span>
+        </Link>
+        <nav className="grid gap-1">
+          {LINKS.map(({ to, label, icon: Icon, match }) => {
+            const active = match(pathname);
+            return (
               <Link
-                to="/"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                  pathname.endsWith("/")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                } transition-all hover:text-primary`}
+                key={to}
+                to={to}
+                className={cn(
+                  "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
+                  active
+                    ? "text-white"
+                    : "text-muted-foreground hover:text-foreground"
+                )}
               >
-                <Home className="h-4 w-4" />
-                Home
+                {active && (
+                  <motion.span
+                    layoutId="sidebar-pill"
+                    className="absolute inset-0 rounded-xl bg-brand-gradient/20"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+                <Icon className="relative z-10 h-4 w-4" />
+                <span className="relative z-10">{label}</span>
               </Link>
-              <Link
-                to="/genres"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                  pathname.includes("genres")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                } transition-all hover:text-primary`}
-              >
-                <ShoppingCart className="h-4 w-4" />
-                Genres
-                <Badge className="ml-auto flex h-6 w-6 shrink-0 items-center justify-center rounded-full">
-                  6
-                </Badge>
-              </Link>
-              <Link
-                to="/upload"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                  pathname.includes("upload")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                } transition-all hover:text-primary`}
-              >
-                <Film className="h-4 w-4" />
-                Your Movie{" "}
-              </Link>
-              <Link
-                to="/community"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                  pathname.includes("community")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                } transition-all hover:text-primary`}
-              >
-                <Users className="h-4 w-4" />
-                Community
-              </Link>
-              <Link
-                to="/analytics"
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 ${
-                  pathname.includes("analytics")
-                    ? "text-primary bg-muted"
-                    : "text-muted-foreground"
-                } transition-all hover:text-primary`}
-              >
-                <LineChart className="h-4 w-4" />
-                Analytics
-              </Link>
-            </nav>
-          </div>
-        </div>
+            );
+          })}
+        </nav>
       </div>
-    </>
+    </aside>
   );
 };
 

@@ -1,5 +1,9 @@
-import { BiSearch } from "react-icons/bi";
-import imdb from "../assets/imdb.svg";
+import { useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { AnimatePresence, motion } from "framer-motion";
+import { Play, Sparkles, Star, TrendingUp } from "lucide-react";
+import Autoplay from "embla-carousel-autoplay";
 import {
   Carousel,
   CarouselContent,
@@ -8,14 +12,12 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import { Card, CardContent } from "./ui/card";
-import { useRef } from "react";
-import Autoplay from "embla-carousel-autoplay";
 import { Button } from "./ui/button";
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { useSearch } from "@/store/useSearch";
 import { ApiList } from "@/types/types";
+import { tmdbImage } from "@/lib/tmdb";
+import { cn } from "@/lib/utils";
 
 type Props = {
   url: string;
@@ -25,160 +27,199 @@ const HeroSection: React.FC<Props> = ({ url }) => {
   const { data } = useQuery({
     queryKey: [url],
     queryFn: () => fetchMovies(url),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-  })
-  const searchRef = useRef(null);
+    staleTime: 5 * 60 * 1000,
+  });
   const navigate = useNavigate();
-  // const { searchQuery, setSearchQuery } = useSearch();
+  const searchRef = useRef<HTMLInputElement>(null);
 
   const searchQuery = useSearch((state) => state.searchQuery);
   const setSearchQuery = useSearch((state) => state.setSearchQuery);
 
-  const plugin = useRef(Autoplay({ delay: 2000 }));
+  const plugin = useRef(Autoplay({ delay: 4500, stopOnInteraction: false }));
 
   const movies = data?.data?.results;
 
-  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  };
-
   const handleSearch = () => {
-    navigate(`/search/${searchQuery}`);
-    console.log(searchQuery);
+    if (!searchQuery?.trim()) return;
+    navigate(`/search/${encodeURIComponent(searchQuery.trim())}`);
   };
 
   const handleSearchPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
+    if (e.key === "Enter") handleSearch();
   };
+
   return (
-    <>
-      <div className=" absolute dark:text-white z-10 w-full top-[18%] left-1/2 flex justify-center translate-x-[-50%] translate-y-[-50%]">
-        <div className="flex flex-col gap-2 justify-center items-center">
-          <h2 className="text-3xl font-bold">Blink Search</h2>
-          <div className="searchBox">
+    <section className="relative">
+      {/* ambient blobs */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+        <div className="animate-blob absolute -left-24 top-10 h-80 w-80 rounded-full bg-pink-600/25 blur-[100px]" />
+        <div
+          className="animate-blob absolute right-0 top-1/3 h-96 w-96 rounded-full bg-violet-600/25 blur-[110px]"
+          style={{ animationDelay: "-4s" }}
+        />
+        <div
+          className="animate-blob absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-cyan-500/15 blur-[90px]"
+          style={{ animationDelay: "-8s" }}
+        />
+      </div>
+
+      {/* search overlay */}
+      <div className="absolute left-1/2 top-16 z-20 w-full -translate-x-1/2 px-4 md:top-20">
+        <motion.div
+          initial={{ opacity: 0, y: -16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mx-auto flex w-full max-w-2xl flex-col items-center gap-2"
+        >
+          <div className="flex items-center gap-2 rounded-full bg-brand-gradient px-4 py-1 text-xs font-bold uppercase tracking-widest text-white">
+            <Sparkles className="h-3 w-3" /> Now Streaming
+          </div>
+          <h2 className="font-display text-center text-3xl font-extrabold md:text-5xl">
+            Your next <span className="text-gradient">obsession</span>
+            <br className="hidden sm:block" /> starts here
+          </h2>
+          <div className="searchBox mt-2">
             <input
               className="searchInput"
               type="text"
-              name=""
+              ref={searchRef}
               value={searchQuery || ""}
-              onChange={handleSearchInputChange}
-              placeholder="search movies/tv-shows/genres..."
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search movies, TV shows, genres…"
               onKeyUp={handleSearchPress}
             />
             <button
               type="submit"
               title="search"
-              ref={searchRef}
               className="searchButton"
               onClick={handleSearch}
             >
-              <BiSearch className="w-7 h-7 translate-x-1" />
+              <svg
+                className="h-5 w-5"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+              >
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.35-4.35" strokeLinecap="round" />
+              </svg>
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
+
+      {/* main hero carousel */}
       <Carousel
         plugins={[plugin.current]}
-        // onMouseEnter={plugin.current.stop}
+        onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
-        className="p-0 m-0"
+        className="group/carousel"
       >
-        <CarouselContent>
-          {movies?.map((item: ApiList) => (
-            <CarouselItem key={item.id} className="p-0 m-0 border-0">
-              <div className="">
-                <Card className="border-none">
-                  <CardContent className="flex md:h-screen h-[96vh] w-full p-0 text-white items-center justify-center relative">
-                    <div className="bg-black/30 absolute inset-0"></div>
-                    <div className="absolute inset-0 dark:bg-gradient-to-t from-background via-transparent to-background"></div>
-                    <div className="absolute inset-0 dark:bg-gradient-to-r from-background to-transparent"></div>
-                    <div className="absolute md:left-20 left-10 md:bottom-[30%] bottom-[26%] md:w-[70%] w-[80%]">
-                      <h1 className="font-black md:text-7xl text-4xl py-6">
-                        {item.title}
+        <CarouselContent className="m-0">
+          {movies?.map((item: ApiList, i: number) => (
+            <CarouselItem key={item.id} className="p-0">
+              <div className="relative h-[100svh] max-h-[760px] min-h-[560px] w-full overflow-hidden">
+                <img
+                  src={tmdbImage(item.backdrop_path, "w1280")}
+                  alt={item.title || item.name}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  className="h-full w-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/20" />
+                <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent" />
+                <div className="absolute inset-x-4 bottom-40 z-10 mx-auto max-w-5xl md:bottom-32 lg:inset-x-12 lg:left-20 lg:mx-0">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={item.id}
+                      initial={{ opacity: 0, y: 24 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.45 }}
+                      className="max-w-2xl"
+                    >
+                      <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-pink-500">
+                        <TrendingUp className="h-4 w-4" />
+                        {item.release_date?.slice(0, 4) || "Trending"}
+                      </div>
+                      <h1 className="font-display text-4xl font-extrabold leading-tight md:text-6xl">
+                        {item.title || item.name}
                       </h1>
-                      <p className="max-w-2xl">
-                        {item.overview.length > 160 ? (
-                          <>
-                            {item.overview.slice(0, 160)}
-                            <span className="text-pink-500 cursor-pointer">
-                              {" "}
-                              show more
-                            </span>
-                          </>
-                        ) : (
-                          item.overview
-                        )}
+                      <p className="mt-3 line-clamp-3 max-w-xl text-sm text-muted-foreground md:text-base">
+                        {item.overview}
                       </p>
-                      <div className="py-2 flex items-center gap-2">
-                        <img src={imdb} alt="imdb" className="w-10 h-10" />
-                        {item.vote_average}({item.vote_count})
-                        <div>
-                          <p>{item.release_date}</p>
-                        </div>
+                      <div className="mt-4 flex items-center gap-3 text-sm">
+                        <span className="flex items-center gap-1 font-semibold text-amber-400">
+                          <Star className="h-4 w-4 fill-amber-400" />
+                          {item.vote_average?.toFixed(1)}
+                        </span>
+                        <span className="text-muted-foreground">
+                          {item.vote_count?.toLocaleString()} votes
+                        </span>
                       </div>
-                      <div className="flex gap-4">
-                        <Button variant={"outline"} className="bg-black">
-                          Watch Trailer
-                        </Button>
-                        {/* <Button className="bg-pink-700 text-white flex gap-1 items-center">
-                          <BiPlay className="w-6 h-6" />
+                      <div className="mt-5 flex flex-wrap gap-3">
+                        <Button
+                          variant="gradient"
+                          size="lg"
+                          onClick={() => navigate(`/player/${item.id}`)}
+                        >
+                          <Play className="mr-1 h-5 w-5 fill-current" />
                           Watch Now
-                        </Button> */}
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="lg"
+                          onClick={() => navigate(`/movie-info/${item.id}`)}
+                          className="bg-black/40 text-white hover:bg-black/60"
+                        >
+                          More Info
+                        </Button>
                       </div>
-                    </div>
-                    <img
-                      src={
-                        "https://image.tmdb.org/t/p/original" +
-                        item.backdrop_path
-                      }
-                      alt={item.title}
-                      className="w-full md:object-fill object-cover h-full"
-                    />
-                    <span className="text-4xl font-semibold">{item.name}</span>
-                  </CardContent>
-                </Card>
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
               </div>
             </CarouselItem>
           ))}
         </CarouselContent>
       </Carousel>
-      <div className="flex absolute bottom-2 my-3 md:ms-auto md:mx-0 md:w-fit w-full mx-auto md:right-4 z-10">
-        <Carousel className="md:max-w-4xl sm:max-w-sm max-w-[300px] md:ms-auto mx-auto">
-          <CarouselContent className="pt-10">
+
+      {/* thumbnail strip */}
+      <div className="absolute inset-x-0 bottom-4 z-10 ml-auto w-full max-w-5xl px-4">
+        <Carousel className="ml-auto max-w-4xl">
+          <CarouselContent className="-ml-2">
             {movies?.map((item: ApiList) => (
               <CarouselItem
                 key={item.id}
-                className="md:basis-1/5 basis-1/3 hover:scale-105 z-30 duration-300 ease-in-out"
+                className={cn("basis-1/3 pl-2 sm:basis-1/5 lg:basis-1/6")}
               >
-                <div className="p-1">
+                <div className="p-0.5">
                   <Card
                     onClick={() => navigate(`/movie-info/${item.id}`)}
-                    className="cursor-pointer rounded-none"
+                    className={cn(
+                      "cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-pink-500/60",
+                    )}
                   >
-                    <CardContent className="flex aspect-auto items-center justify-center p-0">
-                      <span className="text-4xl font-semibold">
-                        <img
-                          src={
-                            "https://image.tmdb.org/t/p/original" +
-                            item.poster_path
-                          }
-                          alt={item.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </span>
+                    <CardContent className="p-0">
+                      <img
+                        src={tmdbImage(item.poster_path, "w185")}
+                        alt={item.title || item.name}
+                        loading="lazy"
+                        decoding="async"
+                        className="aspect-[2/3] w-full object-cover"
+                      />
                     </CardContent>
                   </Card>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="left-0 top-1/2 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70" />
+          <CarouselNext className="right-0 top-1/2 -translate-y-1/2 bg-black/50 text-white hover:bg-black/70" />
         </Carousel>
       </div>
-    </>
+    </section>
   );
 };
 

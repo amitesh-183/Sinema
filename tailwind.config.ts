@@ -17,50 +17,30 @@ export default {
       "3xl": "1660px",
     },
     extend: {
+      fontFamily: {
+        sans: ['"Space Grotesk"', "system-ui", "sans-serif"],
+        display: ['"Unbounded"', '"Space Grotesk"', "sans-serif"],
+      },
       keyframes: {
+        "accordion-down": {
+          from: { height: "0" },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: "0" },
+        },
+        "spin-slow": { to: { transform: "rotate(360deg)" } },
         "caret-blink": {
           "0%,70%,100%": { opacity: "1" },
           "20%,50%": { opacity: "0" },
         },
-        "slide-from-left": {
-          "0%": {
-            transform: "translateX(100%) translateY(-50%)",
-          },
-          "100%": {
-            transform: "translateX(-50%) translateY(-50%)",
-          },
-        },
-        "accordion-down": {
-          from: {
-            height: "0",
-          },
-          to: {
-            height: "var(--radix-accordion-content-height)",
-          },
-        },
-        "accordion-up": {
-          from: {
-            height: "var(--radix-accordion-content-height)",
-          },
-          to: {
-            height: "0",
-          },
-        },
-        fadeDownSmooth: {
-          "0%": { opacity: "0", transform: "translateY(0)" },
-          "25%": { opacity: "1", transform: "translateY(6px)" },
-          "50%": { opacity: "1", transform: "translateY(12px)" },
-          "75%": { opacity: "0", transform: "translateY(18px)" },
-          "100%": { opacity: "0", transform: "translateY(18px)" },
-        },
       },
       animation: {
-        "slide-from-left": "slide-from-left 0.6s ease-out",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        "spin-slow": "spin 8s linear infinite",
+        "spin-slow": "spin-slow 8s linear infinite",
         "caret-blink": "caret-blink 1.25s ease-out infinite",
-        fadeDownSmooth: "fadeDownSmooth 1.8s linear infinite",
       },
       colors: {
         background: "hsl(var(--background))",

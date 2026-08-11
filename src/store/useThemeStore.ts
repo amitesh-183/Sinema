@@ -8,10 +8,10 @@ export type ThemeStore = {
   setTheme: (theme: Theme) => void;
 };
 
-export const useTheme = create(
+export const useTheme = create<ThemeStore>()(
   persist(
     (set) => ({
-      theme: "light",
+      theme: "dark",
       setTheme: (theme: Theme) =>
         set(() => ({
           theme,

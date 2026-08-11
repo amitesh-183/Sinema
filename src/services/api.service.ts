@@ -7,6 +7,7 @@ export const fetchMovies = async (
   url: string,
   genreId?: number,
   searchQuery?: string,
+  page = 1,
 ) => {
   const options: AxiosRequestConfig = {
     method: "GET",
@@ -18,6 +19,7 @@ export const fetchMovies = async (
     params: {
       with_genres: genreId,
       query: searchQuery,
+      page,
     },
   };
   try {

@@ -41,7 +41,7 @@ const Donut = () => {
     };
 
     // Create root element
-    let root = am5.Root.new("chartdivee");
+    const root = am5.Root.new("chartdivee");
 
     if (root._logo) {
       root._logo.dispose();
@@ -50,7 +50,7 @@ const Donut = () => {
     root.setThemes([am5themes_Animated.new(root)]);
 
     // Create chart
-    let chart = root.container.children.push(
+    const chart = root.container.children.push(
       am5percent.PieChart.new(root, {
         innerRadius: 90,
         layout: root.verticalLayout,
@@ -58,7 +58,7 @@ const Donut = () => {
     );
 
     // Create series
-    let series = chart.series.push(
+    const series = chart.series.push(
       am5percent.PieSeries.new(root, {
         valueField: "size",
         categoryField: "sector",
@@ -72,7 +72,7 @@ const Donut = () => {
     series.appear(1000, 100);
 
     // Add label
-    let label = root.tooltipContainer.children.push(
+    const label = root.tooltipContainer.children.push(
       am5.Label.new(root, {
         x: am5.p50,
         y: am5.p50,
@@ -110,9 +110,9 @@ const Donut = () => {
   }, []);
 
   return (
-    <div className="col-span-1 shadow-[0px_0px_10px_#ccc] py-4 px-6">
-      <h1 className="text-xl font-semibold">Traffic</h1>
-      <div id="chartdivee" className="w-full h-[300px]"></div>
+    <div className="card-glass col-span-1 rounded-2xl px-4 py-6">
+      <h1 className="mb-2 text-lg font-semibold">Traffic</h1>
+      <div id="chartdivee" className="h-[300px] w-full"></div>
     </div>
   );
 };
