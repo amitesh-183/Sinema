@@ -1,5 +1,5 @@
 import { Clapperboard, Github, Instagram, Twitter, Youtube, Linkedin } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 
 const COLUMNS: { title: string; links: { label: string; to: string }[] }[] = [
   {
@@ -24,7 +24,7 @@ const Footer = () => {
   return (
     <footer className="relative mt-12 border-t border-white/10">
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-pink-500/60 to-transparent" />
-      <div className="mx-auto grid max-w-7xl grid-cols-2 gap-10 px-6 py-14 md:grid-cols-4 lg:px-10">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-4 py-10 sm:grid-cols-2 sm:gap-10 sm:px-6 sm:py-14 md:grid-cols-4 lg:px-10">
         <div className="col-span-2 md:col-span-1">
           <Link to="/" className="flex items-center gap-2">
             <div className="rounded-xl bg-brand-gradient p-1.5">
@@ -94,7 +94,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="border-t border-white/10 py-5 text-center text-xs text-muted-foreground">
+      <div className="border-t border-white/10 px-4 py-4 text-center text-xs text-muted-foreground sm:py-5">
         © {new Date().getFullYear()} Sinema. All rights reserved.
       </div>
     </footer>

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Star } from "lucide-react";
 import { ApiList } from "@/types/types";
 import noPoster from "@/assets/no-poster.webp";

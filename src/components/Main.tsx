@@ -1,5 +1,5 @@
-import { motion } from "framer-motion";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
+import { Link, useLocation, useNavigate } from "react-router";
 import { ChevronLeft } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
@@ -50,16 +50,16 @@ const Main: React.FC<Props> = ({
   };
 
   return (
-    <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 py-6 md:px-10">
-      <div className="mb-6 flex items-center gap-3">
+    <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 py-6 sm:px-4 md:px-10">
+      <div className="mb-4 flex items-center gap-2 sm:mb-6 sm:gap-3">
         <Link
           to="/"
           aria-label="Back to home"
-          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+          className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10 sm:h-9 sm:w-9"
         >
-          <ChevronLeft className="h-4 w-4" />
+          <ChevronLeft className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
         </Link>
-        <h1 className="font-display text-xl font-bold tracking-tight md:text-2xl">
+        <h1 className="font-display text-lg font-bold tracking-tight sm:text-xl md:text-2xl">
           {sectionTitle}
         </h1>
         {!isLoading && !isError && data?.data?.total_results ? (
@@ -76,34 +76,42 @@ const Main: React.FC<Props> = ({
           </p>
         </div>
       ) : isLoading ? (
-        <MovieGridSkeleton count={12} />
+        <div className="flex justify-center items-center w-full">
+          <MovieGridSkeleton count={12} />
+        </div>
       ) : (
         <>
           <div
-            className={`grid grid-cols-3 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 ${
+            className={`grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 md:gap-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 ${
               isFetching ? "opacity-50 transition-opacity" : ""
             }`}
           >
-            {movies?.slice(start, effectiveEnd).map((movie: ApiList, i: number) => (
-              <motion.div
-                key={movie.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.35, delay: Math.min(i * 0.04, 0.6) }}
-              >
-                <MovieCard
-                  movie={movie}
-                  onClick={() =>
-                    navigate(
-                      `/${pathname.includes("/tv") || movie.media_type === "tv"
-                        ? "tv"
-                        : "movie"
-                      }-info/${movie.id}`
-                    )
-                  }
-                />
-              </motion.div>
-            ))}
+            {movies
+              ?.slice(start, effectiveEnd)
+              .map((movie: ApiList, i: number) => (
+                <motion.div
+                  key={movie.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.35,
+                    delay: Math.min(i * 0.04, 0.6),
+                  }}
+                >
+                  <MovieCard
+                    movie={movie}
+                    onClick={() =>
+                      navigate(
+                        `/${
+                          pathname.includes("/tv") || movie.media_type === "tv"
+                            ? "tv"
+                            : "movie"
+                        }-info/${movie.id}`,
+                      )
+                    }
+                  />
+                </motion.div>
+              ))}
           </div>
 
           <Pagination

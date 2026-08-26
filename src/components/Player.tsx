@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
-import { useLocation, useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { useLocation, useNavigate, useParams, useSearchParams } from "react-router";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowLeft,
   Captions,
@@ -164,16 +164,16 @@ const Player = () => {
               className="pointer-events-none absolute inset-0 z-20 flex flex-col justify-between"
             >
               {/* top bar */}
-              <div className="pointer-events-auto flex items-center gap-3 bg-gradient-to-b from-black/70 to-transparent p-4">
+              <div className="pointer-events-auto flex items-center justify-between gap-3 bg-gradient-to-b from-black/70 to-transparent p-3 sm:p-4">
                 <button
                   onClick={goBack}
                   aria-label="Back"
-                  className="flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white backdrop-blur-md transition-colors hover:bg-black/70"
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/50 text-white backdrop-blur-md transition-colors hover:bg-black/70 sm:h-10 sm:w-10"
                 >
-                  <ArrowLeft className="h-5 w-5" />
+                  <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
                 </button>
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full bg-brand-gradient px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">
+                  <span className="rounded-full bg-brand-gradient px-2.5 py-1 text-[10px] font-bold uppercase tracking-widest text-white sm:px-3 sm:text-xs">
                     Now Playing
                   </span>
                   <span className="hidden rounded-full border border-white/15 bg-black/50 px-3 py-1 text-xs font-semibold text-white/70 backdrop-blur-md sm:block">
@@ -183,9 +183,9 @@ const Player = () => {
               </div>
 
               {/* bottom control bar */}
-              <div className="pointer-events-auto bg-gradient-to-t from-black/85 via-black/50 to-transparent p-4 pt-10">
-                <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-black/60 px-3 py-2 backdrop-blur-md">
-                  <div className="flex items-center gap-2 pl-1">
+              <div className="pointer-events-auto bg-gradient-to-t from-black/85 via-black/50 to-transparent p-3 sm:p-4 sm:pt-10">
+                <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-black/60 p-2 backdrop-blur-md sm:gap-3 sm:px-3 sm:py-2">
+                  <div className="hidden items-center gap-2 pl-1 sm:flex">
                     <MonitorPlay className="h-4 w-4 text-pink-500" />
                     <p className="text-xs font-medium text-white/70">
                       {captionsOn
@@ -194,7 +194,7 @@ const Player = () => {
                     </p>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                     {/* captions */}
                     <div className="relative" ref={captionsRef}>
                       <button
@@ -203,7 +203,7 @@ const Player = () => {
                           setCaptionsOpen((o) => !o);
                         }}
                         className={cn(
-                          "flex h-9 items-center gap-1.5 rounded-full border px-3 text-xs font-semibold transition-colors",
+                          "flex h-8 items-center gap-1 rounded-full border px-2 text-[11px] font-semibold transition-colors sm:h-9 sm:gap-1.5 sm:px-3 sm:text-xs",
                           captionsOn
                             ? "border-pink-500/40 bg-pink-500/10 text-white"
                             : "border-white/15 text-white/60 hover:bg-white/10",
@@ -211,11 +211,11 @@ const Player = () => {
                       >
                         <Captions
                           className={cn(
-                            "h-4 w-4",
+                            "h-3.5 w-3.5 sm:h-4 sm:w-4",
                             captionsOn ? "text-pink-400" : "text-white/40",
                           )}
                         />
-                        {activeLang?.emoji}
+                        <span className="hidden sm:inline">{activeLang?.emoji}</span>
                         <span>{captionsOn ? activeLang?.label : "Off"}</span>
                         <ChevronDown className="h-3 w-3" />
                       </button>
@@ -226,7 +226,7 @@ const Player = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 8, scale: 0.97 }}
                             transition={{ duration: 0.15 }}
-                            className="absolute bottom-full right-0 z-30 mb-2 max-h-72 w-52 overflow-y-auto rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-xl backdrop-blur-md"
+                            className="absolute bottom-full right-0 z-30 mb-2 max-h-72 w-44 overflow-y-auto rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-xl backdrop-blur-md sm:w-52"
                           >
                             <button
                               onClick={() => {
@@ -276,9 +276,9 @@ const Player = () => {
                           setCaptionsOpen(false);
                           setServerOpen((o) => !o);
                         }}
-                        className="flex h-9 items-center gap-1.5 rounded-full border border-white/15 px-3 text-xs font-semibold text-white/70 transition-colors hover:bg-white/10"
+                        className="flex h-8 items-center gap-1 rounded-full border border-white/15 px-2 text-[11px] font-semibold text-white/70 transition-colors hover:bg-white/10 sm:h-9 sm:gap-1.5 sm:px-3 sm:text-xs"
                       >
-                        <Server className="h-4 w-4" />
+                        <Server className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                         <span>{provider.name}</span>
                         <ChevronDown className="h-3 w-3" />
                       </button>
@@ -289,7 +289,7 @@ const Player = () => {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 8, scale: 0.97 }}
                             transition={{ duration: 0.15 }}
-                            className="absolute bottom-full right-0 z-30 mb-2 w-60 overflow-hidden rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-xl backdrop-blur-md"
+                            className="absolute bottom-full right-0 z-30 mb-2 w-48 overflow-hidden rounded-2xl border border-white/10 bg-black/90 p-1.5 shadow-xl backdrop-blur-md sm:w-60"
                           >
                             <p className="px-3 pb-1 pt-1 text-[10px] font-bold uppercase tracking-widest text-white/40">
                               Servers
@@ -340,12 +340,12 @@ const Player = () => {
                       onClick={toggleFullscreen}
                       aria-label={isFullscreen ? "Exit fullscreen" : "Fullscreen"}
                       title={isFullscreen ? "Exit fullscreen (F)" : "Fullscreen (F)"}
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white/10"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white/10 sm:h-9 sm:w-9"
                     >
                       {isFullscreen ? (
-                        <Minimize className="h-4 w-4" />
+                        <Minimize className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       ) : (
-                        <Maximize className="h-4 w-4" />
+                        <Maximize className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                       )}
                     </button>
 
@@ -354,9 +354,9 @@ const Player = () => {
                       onClick={() => setLoading(true)}
                       aria-label="Reload player"
                       title="Reload player"
-                      className="flex h-9 w-9 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white/10"
+                      className="flex h-8 w-8 items-center justify-center rounded-full border border-white/15 text-white/70 transition-colors hover:bg-white/10 sm:h-9 sm:w-9"
                     >
-                      <RotateCcw className="h-4 w-4" />
+                      <RotateCcw className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                     </button>
                   </div>
                 </div>

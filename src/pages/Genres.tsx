@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { fetchMovies } from "@/services/api.service";
 import { Genre } from "@/types/types";
 import { useGenre } from "@/store/useGenre";
@@ -32,8 +32,8 @@ const Genres = () => {
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />
-      <div className="mx-auto w-full max-w-[1600px] px-4 py-8 md:px-10">
-        <h1 className="font-display mb-6 text-3xl font-extrabold md:text-4xl">
+      <div className="mx-auto w-full max-w-[1600px] px-4 py-6 sm:px-4 sm:py-8 md:px-10">
+        <h1 className="font-display mb-5 text-2xl font-extrabold sm:mb-6 sm:text-3xl md:text-4xl">
           Explore by <span className="text-gradient">Genre</span>
         </h1>
         {isLoading ? (

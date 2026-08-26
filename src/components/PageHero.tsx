@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { Sparkles } from "lucide-react";
 
 interface PageHeroProps {
@@ -20,7 +20,7 @@ const PageHero = ({ badge, title, description }: PageHeroProps) => {
           {badge}
         </div>
       )}
-      <h1 className="font-display text-3xl font-extrabold md:text-4xl">
+      <h1 className="font-display text-2xl font-extrabold sm:text-3xl md:text-4xl">
         {title}
       </h1>
       {description && (

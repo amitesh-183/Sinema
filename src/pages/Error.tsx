@@ -1,5 +1,5 @@
-import { useRouteError, Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { useRouteError, Link } from "react-router";
+import { motion } from "motion/react";
 import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -24,7 +24,7 @@ const Error = () => {
         transition={{ duration: 0.5 }}
         className="relative"
       >
-        <div className="font-display text-8xl font-extrabold leading-none">
+        <div className="font-display text-6xl font-extrabold leading-none sm:text-8xl">
           <span className="text-gradient">4</span>
           <span className="text-white">0</span>
           <span className="text-gradient">4</span>

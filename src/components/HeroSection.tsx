@@ -1,7 +1,7 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion } from "motion/react";
 import { Play, Sparkles, Star, TrendingUp } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import {
@@ -64,7 +64,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
       </div>
 
       {/* search overlay */}
-      <div className="absolute left-1/2 top-16 z-20 w-full -translate-x-1/2 px-4 md:top-20">
+      <div className="absolute left-1/2 z-20 w-full -translate-x-1/2 px-4 pt-14 md:pt-20">
         <motion.div
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -74,7 +74,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
           <div className="flex items-center gap-2 rounded-full bg-brand-gradient px-4 py-1 text-xs font-bold uppercase tracking-widest text-white">
             <Sparkles className="h-3 w-3" /> Now Streaming
           </div>
-          <h2 className="font-display text-center text-3xl font-extrabold md:text-5xl">
+          <h2 className="font-display text-center text-2xl font-extrabold sm:text-3xl md:text-5xl">
             Your next <span className="text-gradient">obsession</span>
             <br className="hidden sm:block" /> starts here
           </h2>
@@ -119,7 +119,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
         <CarouselContent className="m-0">
           {movies?.map((item: ApiList, i: number) => (
             <CarouselItem key={item.id} className="p-0">
-              <div className="relative h-[100svh] max-h-[760px] min-h-[560px] w-full overflow-hidden">
+              <div className="relative h-[100dvh] min-h-[420px] w-full overflow-hidden sm:h-[calc(100dvh-4rem)] sm:min-h-[560px]">
                 <img
                   src={tmdbImage(item.backdrop_path, "w1280")}
                   alt={item.title || item.name}
@@ -129,7 +129,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/20" />
                 <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent" />
-                <div className="absolute inset-x-4 bottom-40 z-10 mx-auto max-w-5xl md:bottom-32 lg:inset-x-12 lg:left-20 lg:mx-0">
+                <div className="absolute inset-x-4 bottom-24 z-10 mx-auto max-w-5xl sm:bottom-32 md:bottom-32 lg:inset-x-12 lg:left-20 lg:mx-0">
                   <AnimatePresence mode="wait">
                     <motion.div
                       key={item.id}
@@ -143,7 +143,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
                         <TrendingUp className="h-4 w-4" />
                         {item.release_date?.slice(0, 4) || "Trending"}
                       </div>
-                      <h1 className="font-display text-4xl font-extrabold leading-tight md:text-6xl">
+                      <h1 className="font-display text-2xl font-extrabold leading-tight sm:text-4xl md:text-6xl">
                         {item.title || item.name}
                       </h1>
                       <p className="mt-3 line-clamp-3 max-w-xl text-sm text-muted-foreground md:text-base">
@@ -186,13 +186,13 @@ const HeroSection: React.FC<Props> = ({ url }) => {
       </Carousel>
 
       {/* thumbnail strip */}
-      <div className="absolute inset-x-0 bottom-4 z-10 ml-auto w-full max-w-5xl px-4">
+      <div className="absolute inset-x-0 bottom-4 z-10 ml-auto lg:block w-full max-w-4xl px-4 hidden">
         <Carousel className="ml-auto max-w-4xl">
           <CarouselContent className="-ml-2">
             {movies?.map((item: ApiList) => (
               <CarouselItem
                 key={item.id}
-                className={cn("basis-1/3 pl-2 sm:basis-1/5 lg:basis-1/6")}
+                className={cn("basis-1/3 pl-2 sm:basis-1/5 lg:basis-1/4")}
               >
                 <div className="p-0.5">
                   <Card

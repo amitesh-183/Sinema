@@ -149,7 +149,7 @@ const FlowChart = () => {
   return (
     <div className="card-glass col-span-1 rounded-2xl px-4 py-6">
       <h1 className="mb-2 text-lg font-semibold">Watch Traffic</h1>
-      <div id="chartdiv" className="h-[280px] w-full"></div>
+      <div id="chartdiv" className="h-[220px] w-full sm:h-[280px]"></div>
     </div>
   );
 };

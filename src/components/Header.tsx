@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { Link, useLocation, useNavigate } from "react-router";
+import { AnimatePresence, motion } from "motion/react";
 import {
   ChevronDown,
   Clapperboard,
@@ -154,15 +154,15 @@ const Header = ({ extraClasses = "" }) => {
     <>
       <header
         className={cn(
-          "glass sticky top-0 z-50 flex w-full items-center justify-between border-b border-white/10 px-4 py-3 md:px-10",
+          "glass sticky top-0 z-50 flex w-full items-center justify-between border-b border-white/10 px-3 py-2.5 sm:px-4 md:px-10",
           extraClasses
         )}
       >
-        <Link to="/" className="group flex items-center gap-2">
-          <div className="animate-pulse-ring rounded-xl bg-brand-gradient p-1.5 transition-transform group-hover:rotate-6">
-            <Clapperboard className="h-6 w-6 text-white" />
+        <Link to="/" className="group flex items-center gap-1.5 sm:gap-2">
+          <div className="animate-pulse-ring rounded-lg bg-brand-gradient p-1 sm:rounded-xl sm:p-1.5 transition-transform group-hover:rotate-6">
+            <Clapperboard className="h-5 w-5 text-white sm:h-6 sm:w-6" />
           </div>
-          <span className="font-display hidden text-xl font-bold tracking-tight md:block">
+          <span className="font-display hidden text-lg font-bold tracking-tight sm:block sm:text-xl">
             Sine<span className="text-gradient">ma</span>
           </span>
         </Link>
@@ -196,21 +196,21 @@ const Header = ({ extraClasses = "" }) => {
           <GenreMenu />
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
           <button
             onClick={() => navigate("/search")}
             aria-label="Search"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10 sm:h-9 sm:w-9"
           >
-            <Search className="h-4 w-4" />
+            <Search className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
           </button>
           <ThemeMenu />
           <button
             onClick={() => setMobileOpen((o) => !o)}
             aria-label="Toggle menu"
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10 md:hidden"
+            className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10 md:hidden sm:h-9 sm:w-9"
           >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
           </button>
         </div>
       </header>
@@ -222,7 +222,7 @@ const Header = ({ extraClasses = "" }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.18 }}
-            className="glass fixed inset-x-3 top-16 z-40 rounded-2xl border border-white/10 p-3 md:hidden"
+            className="glass fixed inset-x-2 top-14 z-40 rounded-2xl border border-white/10 p-3 sm:inset-x-3 sm:top-16 md:hidden"
           >
             <nav className="flex flex-col gap-1">
               {NAV_LINKS.map(({ to, label, icon: Icon, match }) => (

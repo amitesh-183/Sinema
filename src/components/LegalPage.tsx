@@ -1,5 +1,5 @@
 import { lazy, Suspense, type ReactNode } from "react";
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { PageLoader } from "@/components/Loader";
 
 const Header = lazy(() => import("@/components/Header"));
@@ -21,7 +21,7 @@ const LegalPage = ({ badge, title, updated, sections, children }: LegalPageProps
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />
-      <main className="mx-auto w-full max-w-3xl px-6 py-12">
+      <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -30,7 +30,7 @@ const LegalPage = ({ badge, title, updated, sections, children }: LegalPageProps
           <div className="mb-3 w-fit rounded-full bg-brand-gradient px-3 py-1 text-xs font-bold uppercase tracking-widest text-white">
             {badge}
           </div>
-          <h1 className="font-display text-3xl font-extrabold md:text-4xl">
+          <h1 className="font-display text-2xl font-extrabold sm:text-3xl md:text-4xl">
             {title}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">Last updated: {updated}</p>

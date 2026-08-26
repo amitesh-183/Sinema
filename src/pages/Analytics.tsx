@@ -10,7 +10,7 @@ const Header = lazy(() => import("@/components/Header"));
 const Analytics = () => {
   return (
     <Suspense fallback={<PageLoader />}>
-      <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[260px_1fr]">
+      <div className="grid min-h-screen w-full grid-cols-1 md:grid-cols-[220px_1fr] lg:grid-cols-[260px_1fr]">
         <Sidebar />
         <div className="flex flex-col">
           <Header />

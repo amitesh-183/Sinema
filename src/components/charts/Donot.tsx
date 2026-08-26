@@ -112,7 +112,7 @@ const Donut = () => {
   return (
     <div className="card-glass col-span-1 rounded-2xl px-4 py-6">
       <h1 className="mb-2 text-lg font-semibold">Traffic</h1>
-      <div id="chartdivee" className="h-[300px] w-full"></div>
+      <div id="chartdivee" className="h-[250px] w-full sm:h-[300px]"></div>
     </div>
   );
 };

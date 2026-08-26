@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router";
 import { ArrowRight } from "lucide-react";
 
 interface SectionHeaderProps {
@@ -8,8 +8,8 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ title, viewAll }: SectionHeaderProps) => {
   return (
-    <div className="mb-5 flex items-center justify-between">
-      <h2 className="font-display text-xl font-bold capitalize tracking-tight sm:text-2xl">
+    <div className="mb-4 flex items-center justify-between sm:mb-5">
+      <h2 className="font-display text-lg font-bold capitalize tracking-tight sm:text-xl sm:text-2xl">
         <span className="mr-2 inline-block h-5 w-1.5 rounded-full bg-brand-gradient align-middle" />
         {title}
       </h2>

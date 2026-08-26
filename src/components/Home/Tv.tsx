@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { ApiList } from "@/types/types";
@@ -32,11 +32,11 @@ const Tv = () => {
         <SectionHeader title="Popular TV Shows" viewAll="/tv-series" />
       <Carousel>
         {isLoading ? (
-          <div className="flex gap-4 overflow-hidden py-2">
+          <div className="flex gap-3 overflow-hidden py-2 sm:gap-4">
             {Array.from({ length: 7 }).map((_, i) => (
               <MovieCardSkeleton
                 key={i}
-                className={cn("w-[140px] shrink-0 sm:w-[160px]")}
+                className={cn("w-[120px] shrink-0 sm:w-[140px] md:w-[160px]")}
               />
             ))}
           </div>

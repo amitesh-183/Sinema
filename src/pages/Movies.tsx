@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { useParams } from "react-router-dom";
+import { useParams } from "react-router";
 import { useGenre } from "@/store/useGenre";
 import { PageLoader } from "@/components/Loader";
 

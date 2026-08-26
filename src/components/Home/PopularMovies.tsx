@@ -5,7 +5,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "../ui/carousel";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useQuery } from "@tanstack/react-query";
 import { fetchMovies } from "@/services/api.service";
 import { ApiList } from "@/types/types";
@@ -38,36 +38,36 @@ const PopularMovies: React.FC<PopularMoviesProps> = ({ category }) => {
           title={`${category.split("_").join(" ")} Movies`}
           viewAll="/movies"
         />
-      <Carousel className="[&_.embla__viewport]:overflow-visible">
-        {isLoading ? (
-          <div className="flex gap-4 overflow-hidden py-2">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <MovieCardSkeleton
-                key={i}
-                className={cn("w-[140px] shrink-0 sm:w-[160px]")}
-              />
-            ))}
-          </div>
-        ) : (
-          <>
-            <CarouselContent className="-ml-3">
-              {movies?.map((item: ApiList) => (
-                <CarouselItem
-                  key={item.id}
-                  className="basis-1/2 pl-3 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
-                >
-                  <MovieCard
-                    movie={item}
-                    onClick={() => navigate(`/movie-info/${item.id}`)}
-                  />
-                </CarouselItem>
+        <Carousel className="[&_.embla__viewport]:overflow-visible">
+          {isLoading ? (
+            <div className="flex justify-center gap-3 overflow-hidden py-2 sm:gap-4">
+              {Array.from({ length: 7 }).map((_, i) => (
+                <MovieCardSkeleton
+                  key={i}
+                  className={cn("w-[120px] shrink-0 sm:w-[140px] md:w-[160px]")}
+                />
               ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-0 top-1/2 hidden bg-black/50 text-white hover:bg-black/70 md:flex" />
-            <CarouselNext className="right-0 top-1/2 hidden bg-black/50 text-white hover:bg-black/70 md:flex" />
-          </>
-        )}
-      </Carousel>
+            </div>
+          ) : (
+            <>
+              <CarouselContent className="-ml-3">
+                {movies?.map((item: ApiList) => (
+                  <CarouselItem
+                    key={item.id}
+                    className="basis-1/2 pl-3 sm:basis-1/3 md:basis-1/4 lg:basis-1/5 xl:basis-1/6"
+                  >
+                    <MovieCard
+                      movie={item}
+                      onClick={() => navigate(`/movie-info/${item.id}`)}
+                    />
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="left-0 top-1/2 hidden bg-black/50 text-white hover:bg-black/70 md:flex" />
+              <CarouselNext className="right-0 top-1/2 hidden bg-black/50 text-white hover:bg-black/70 md:flex" />
+            </>
+          )}
+        </Carousel>
       </section>
     </Reveal>
   );

@@ -28,13 +28,13 @@ const Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
   return (
     <nav
       aria-label="Pagination"
-      className="mt-10 flex flex-wrap items-center justify-center gap-2"
+      className="mt-10 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"
     >
       <button
         onClick={() => onChange(page - 1)}
         disabled={page <= 1}
         aria-label="Previous page"
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 sm:h-10 sm:w-10"
       >
         <ChevronLeft className="h-4 w-4" />
       </button>
@@ -43,7 +43,7 @@ const Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
         item === "ellipsis" ? (
           <span
             key={`e-${i}`}
-            className="flex h-10 items-center px-1 text-sm text-muted-foreground"
+            className="flex h-9 items-center px-1 text-sm text-muted-foreground sm:h-10"
           >
             …
           </span>
@@ -53,7 +53,7 @@ const Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
             onClick={() => onChange(item)}
             aria-current={item === page ? "page" : undefined}
             className={cn(
-              "h-10 min-w-10 rounded-full px-3 text-sm font-semibold transition-all",
+              "h-9 min-w-9 rounded-full px-2.5 text-sm font-semibold transition-all sm:h-10 sm:min-w-10 sm:px-3",
               item === page
                 ? "bg-brand-gradient text-white shadow-lg shadow-pink-500/25"
                 : "border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
@@ -68,7 +68,7 @@ const Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
         onClick={() => onChange(page + 1)}
         disabled={page >= totalPages}
         aria-label="Next page"
-        className="flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
+        className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-sm transition-colors hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40 sm:h-10 sm:w-10"
       >
         <ChevronRight className="h-4 w-4" />
       </button>

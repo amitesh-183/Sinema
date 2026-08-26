@@ -15,9 +15,9 @@ const QuickSearch = () => {
           <TooltipTrigger asChild>
             <Button
               variant="outline"
-              className=" bg-[#FF0080] hover:bg-[#FF0080] h-12 w-12 hover:shadow hover:shadow-[#ff0080] p-2 fixed bottom-8 z-20 right-4 rounded-full"
+              className="bg-[#FF0080] hover:bg-[#FF0080] h-11 w-11 hover:shadow hover:shadow-[#ff0080] p-2 fixed bottom-6 z-20 right-4 rounded-full sm:bottom-8 sm:h-12 sm:w-12"
             >
-              <SearchIcon className="w-10 h-10 text-emerald-50" />
+              <SearchIcon className="h-5 w-5 text-emerald-50" />
             </Button>
           </TooltipTrigger>
           <TooltipContent side="left">Quick Search</TooltipContent>

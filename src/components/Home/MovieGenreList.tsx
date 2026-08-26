@@ -1,6 +1,6 @@
 // import { Carousel, CarouselContent, CarouselItem } from "../ui/carousel";
 // import { Card, CardContent } from "../ui/card";
-// import { Link, useNavigate } from "react-router-dom";
+// import { Link, useNavigate } from "react-router";
 // import { useFetch } from "@/hooks/UseFetch";
 
 // const PopularMovies = () => {

@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import {
   Clapperboard,
   Compass,
@@ -7,7 +7,7 @@ import {
   Upload,
   Users,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router";
 import { cn } from "@/lib/utils";
 
 const LINKS = [
@@ -21,7 +21,7 @@ const LINKS = [
 const Sidebar = () => {
   const { pathname } = useLocation();
   return (
-    <aside className="sticky top-0 hidden h-screen border-r border-white/10 bg-card/40 backdrop-blur-sm md:block">
+    <aside className="sticky top-0 hidden h-auto min-h-screen border-r border-white/10 bg-card/40 backdrop-blur-sm md:block">
       <div className="flex h-full flex-col gap-2 px-3 py-4">
         <Link
           to="/"

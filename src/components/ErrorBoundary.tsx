@@ -23,7 +23,7 @@ class ErrorBoundary extends Component<Props, State> {
     if (this.state.hasError) {
       return (
         <div className="flex min-h-screen flex-col items-center justify-center gap-6 px-6 text-center">
-          <div className="font-display text-7xl font-extrabold text-gradient">
+          <div className="font-display text-5xl font-extrabold text-gradient sm:text-7xl">
             Oops!
           </div>
           <p className="max-w-md text-muted-foreground">

@@ -3,8 +3,8 @@ import {
   Outlet,
   RouterProvider,
   useLocation,
-} from "react-router-dom";
-import { motion } from "framer-motion";
+} from "react-router";
+import { motion } from "motion/react";
 import { useEffect } from "react";
 import Home from "./pages/Home";
 import Search from "./pages/Search";
@@ -16,6 +16,7 @@ import Movies from "./pages/Movies";
 import Player from "./components/Player";
 import TvShows from "./pages/TvShows";
 import Details from "./pages/Details";
+import Person from "./pages/Person";
 import Error from "./pages/Error";
 import About from "./pages/About";
 import Privacy from "./pages/Privacy";
@@ -31,6 +32,7 @@ const AnimatedOutlet = () => {
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
+      className="flex min-h-screen flex-col"
     >
       <Outlet />
     </motion.div>
@@ -63,6 +65,7 @@ const router = createBrowserRouter([
       { path: "/movies", element: <Movies /> },
       { path: "/movie-info/:movieId", element: <Details /> },
       { path: "/tv-info/:movieId", element: <Details /> },
+      { path: "/person/:personId", element: <Person /> },
       { path: "/player/:playerId", element: <Player /> },
       { path: "/tv-series", element: <TvShows /> },
       { path: "/about", element: <About /> },

@@ -1,5 +1,5 @@
 import { lazy, Suspense, ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { Film, SearchX } from "lucide-react";
 import { useSearch } from "@/store/useSearch";
 import { useDebounce } from "@/hooks/useDebounce";
@@ -28,12 +28,12 @@ const Search = () => {
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />
-      <div className="mx-auto w-full max-w-3xl px-4 pt-10">
-        <div className="flex flex-col items-center gap-4">
-          <div className="rounded-full bg-brand-gradient px-4 py-1 text-xs font-bold uppercase tracking-widest text-white">
+      <div className="mx-auto w-full max-w-3xl px-4 pt-8 sm:pt-10">
+        <div className="flex flex-col items-center gap-3 sm:gap-4">
+          <div className="rounded-full bg-brand-gradient px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white sm:px-4 sm:text-xs">
             <span className="mr-1">⌕</span> Blink Search
           </div>
-          <h1 className="font-display text-center text-3xl font-extrabold md:text-4xl">
+          <h1 className="font-display text-center text-2xl font-extrabold sm:text-3xl md:text-4xl">
             Find your <span className="text-gradient">vibe</span>
           </h1>
           <div className="searchBox mt-1">
