@@ -40,7 +40,7 @@ const PopularMovies: React.FC<PopularMoviesProps> = ({ category }) => {
         />
         <Carousel className="[&_.embla__viewport]:overflow-visible">
           {isLoading ? (
-            <div className="flex justify-center gap-3 overflow-hidden py-2 sm:gap-4">
+            <div className="flex justify-center gap-3 overflow-hidden py-2 sm:gap-4 mt-72">
               {Array.from({ length: 7 }).map((_, i) => (
                 <MovieCardSkeleton
                   key={i}
