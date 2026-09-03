@@ -5,7 +5,6 @@ export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     screens: {
@@ -14,7 +13,6 @@ export default {
       lg: "1024px",
       xl: "1280px",
       "2xl": "1440px",
-      "3xl": "1660px",
     },
     extend: {
       fontFamily: {
@@ -22,25 +20,18 @@ export default {
         display: ['"Unbounded"', '"Space Grotesk"', "sans-serif"],
       },
       keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
+        shimmer: {
+          "100%": { transform: "translateX(100%)" },
         },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        "spin-slow": { to: { transform: "rotate(360deg)" } },
-        "caret-blink": {
-          "0%,70%,100%": { opacity: "1" },
-          "20%,50%": { opacity: "0" },
+        "pulse-ring": {
+          "0%": { boxShadow: "0 0 0 0 hsl(48 96% 53% / 0.5)" },
+          "70%": { boxShadow: "0 0 0 14px hsl(48 96% 53% / 0)" },
+          "100%": { boxShadow: "0 0 0 0 hsl(48 96% 53% / 0)" },
         },
       },
       animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        "spin-slow": "spin-slow 8s linear infinite",
-        "caret-blink": "caret-blink 1.25s ease-out infinite",
+        shimmer: "shimmer 1.6s infinite",
+        "pulse-ring": "pulse-ring 2.2s cubic-bezier(0.66, 0, 0, 1) infinite",
       },
       colors: {
         background: "hsl(var(--background))",

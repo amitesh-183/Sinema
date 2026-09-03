@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /player/
+Disallow: /analytics/
+Disallow: /upload/
+Disallow: /community/
+
+Sitemap: https://sinema.app/sitemap.xml

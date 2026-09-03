@@ -17,13 +17,13 @@ const MovieCard = ({ movie, onClick, className = "" }: MovieCardProps) => {
   return (
     <motion.div
       onClick={onClick}
-      whileHover={{ y: -8, scale: 1.02 }}
+      whileHover={{ y: -8, scale: 1.009 }}
       transition={{ type: "spring", stiffness: 300, damping: 22 }}
-      className={`group relative cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-card/60 shadow-lg shadow-black/30 backdrop-blur-sm transition-shadow hover:shadow-pink-500/20 ${className}`}
+      className={`group relative cursor-pointer overflow-hidden rounded-2xl border dark:border-white/10 bg-card/60  shadow-black/30 backdrop-blur-sm transition-shadow hover:shadow-xl hover:shadow-yellow-400/20 dark:hover:shadow-yellow-400/20 ${className}`}
     >
       <div className="relative aspect-[2/3] overflow-hidden">
         <img
-          src={tmdbImage(movie.poster_path) || noPoster}
+          src={tmdbImage(movie.poster_path, "w342") || noPoster}
           alt={title}
           loading="lazy"
           decoding="async"

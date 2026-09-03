@@ -5,19 +5,13 @@ import { motion } from "motion/react";
 import { fetchMovies } from "@/services/api.service";
 import { Genre } from "@/types/types";
 import { useGenre } from "@/store/useGenre";
+import { useHead } from "@/hooks/useHead";
 import { PageLoader, MovieCardSkeleton } from "@/components/Loader";
-import { cn } from "@/lib/utils";
 
 const Header = lazy(() => import("@/components/Header"));
 
-const GRADIENTS = [
-  "from-pink-500/40 to-violet-600/40",
-  "from-violet-500/40 to-cyan-500/30",
-  "from-cyan-500/30 to-emerald-500/30",
-  "from-amber-500/30 to-pink-500/30",
-];
-
 const Genres = () => {
+  useHead({ title: "Genres" });
   const navigate = useNavigate();
   const setGenres = useGenre((state) => state.setGenreId);
 
@@ -55,10 +49,7 @@ const Genres = () => {
                   setGenres(genre.id);
                   navigate(`/movies/${genre.name}`);
                 }}
-                className={cn(
-                  "group relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br p-6 text-left backdrop-blur-sm transition-shadow hover:shadow-lg hover:shadow-pink-500/20",
-                  GRADIENTS[i % GRADIENTS.length]
-                )}
+                className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 p-6 text-left backdrop-blur-sm transition-shadow hover:shadow-lg hover:shadow-yellow-400/20"
               >
                 <span className="pointer-events-none absolute -right-3 -top-3 font-display text-6xl font-extrabold text-white/10 transition-transform duration-300 group-hover:scale-125">
                   {genre.name[0]}

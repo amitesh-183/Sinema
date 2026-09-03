@@ -11,7 +11,7 @@ const Error = () => {
   return (
     <div className="relative flex min-h-screen flex-col items-center justify-center gap-6 overflow-hidden px-6 text-center">
       <div className="pointer-events-none absolute inset-0">
-        <div className="animate-blob absolute left-1/4 top-1/4 h-72 w-72 rounded-full bg-pink-600/20 blur-[100px]" />
+        <div className="animate-blob absolute left-1/4 top-1/4 h-72 w-72 rounded-full bg-yellow-400/20 blur-[100px]" />
         <div
           className="animate-blob absolute bottom-1/4 right-1/4 h-72 w-72 rounded-full bg-violet-600/20 blur-[100px]"
           style={{ animationDelay: "-5s" }}

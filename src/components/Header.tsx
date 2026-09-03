@@ -26,8 +26,18 @@ interface Genre {
 
 const NAV_LINKS = [
   { to: "/", label: "Home", icon: Home, match: (p: string) => p === "/" },
-  { to: "/movies", label: "Movies", icon: Film, match: (p: string) => p.includes("/movies") || p.includes("/movie-info") },
-  { to: "/tv-series", label: "TV Shows", icon: Tv, match: (p: string) => p.includes("/tv") },
+  {
+    to: "/movies",
+    label: "Movies",
+    icon: Film,
+    match: (p: string) => p.includes("/movies") || p.includes("/movie-info"),
+  },
+  {
+    to: "/tv-series",
+    label: "TV Shows",
+    icon: Tv,
+    match: (p: string) => p.includes("/tv"),
+  },
 ];
 
 const GenreMenu = ({ onNavigate }: { onNavigate?: () => void }) => {
@@ -95,7 +105,9 @@ const ThemeMenu = () => {
     const root = document.documentElement;
     root.classList.remove("dark", "light");
     if (theme === "system") {
-      const systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      const systemDark = window.matchMedia(
+        "(prefers-color-scheme: dark)",
+      ).matches;
       root.classList.add(systemDark ? "dark" : "light");
     } else {
       root.classList.add(theme);
@@ -132,7 +144,7 @@ const ThemeMenu = () => {
                   "block w-full rounded-xl px-3 py-2 text-left text-sm capitalize transition-colors",
                   theme === t
                     ? "bg-brand-gradient font-semibold text-white"
-                    : "text-muted-foreground hover:bg-white/10"
+                    : "text-muted-foreground hover:bg-white/10",
                 )}
               >
                 {t}
@@ -155,15 +167,15 @@ const Header = ({ extraClasses = "" }) => {
       <header
         className={cn(
           "glass sticky top-0 z-50 flex w-full items-center justify-between border-b border-white/10 px-3 py-2.5 sm:px-4 md:px-10",
-          extraClasses
+          extraClasses,
         )}
       >
         <Link to="/" className="group flex items-center gap-1.5 sm:gap-2">
-          <div className="animate-pulse-ring rounded-lg bg-brand-gradient p-1 sm:rounded-xl sm:p-1.5 transition-transform group-hover:rotate-6">
+          <div className="animate-pulse-ring rounded-lg p-1 sm:rounded-xl sm:p-1.5 transition-transform group-hover:rotate-6">
             <Clapperboard className="h-5 w-5 text-white sm:h-6 sm:w-6" />
           </div>
           <span className="font-display hidden text-lg font-bold tracking-tight sm:block sm:text-xl">
-            Sine<span className="text-gradient">ma</span>
+            Sinema
           </span>
         </Link>
 
@@ -178,7 +190,7 @@ const Header = ({ extraClasses = "" }) => {
                   "relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors",
                   active
                     ? "text-white"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {active && (
@@ -210,7 +222,11 @@ const Header = ({ extraClasses = "" }) => {
             aria-label="Toggle menu"
             className="flex h-8 w-8 items-center justify-center rounded-full border border-white/10 bg-white/5 transition-colors hover:bg-white/10 md:hidden sm:h-9 sm:w-9"
           >
-            {mobileOpen ? <X className="h-4 w-4 sm:h-5 sm:w-5" /> : <Menu className="h-4 w-4 sm:h-5 sm:w-5" />}
+            {mobileOpen ? (
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
+            ) : (
+              <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
+            )}
           </button>
         </div>
       </header>
@@ -234,7 +250,7 @@ const Header = ({ extraClasses = "" }) => {
                     "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-colors",
                     match(pathname)
                       ? "bg-brand-gradient text-white"
-                      : "text-muted-foreground hover:bg-white/10"
+                      : "text-muted-foreground hover:bg-white/10",
                   )}
                 >
                   <Icon className="h-4 w-4" />

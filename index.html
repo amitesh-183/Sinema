@@ -5,38 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Sinema — discover movies & TV shows, ultra fast. Your all-in-one entertainment hub."
+      content="Sinema — discover movies & TV shows, ultra fast. Search, stream and explore thousands of titles powered by TMDB."
     />
     <meta name="theme-color" content="#12061e" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <meta name="robots" content="index, follow" />
+    <meta name="author" content="Sinema" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Sinema" />
+    <meta property="og:title" content="Sinema — Movies & TV Shows, Ultra Fast" />
+    <meta property="og:description" content="Discover, search and explore thousands of movies and TV shows. Your all-in-one entertainment hub." />
+    <meta property="og:url" content="https://sinema.app" />
+    <meta property="og:image" content="https://sinema.app/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Sinema — Movies & TV Shows" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sinema — Movies & TV Shows, Ultra Fast" />
+    <meta name="twitter:description" content="Discover, search and explore thousands of movies and TV shows." />
+    <meta name="twitter:image" content="https://sinema.app/og-image.png" />
+    <meta name="twitter:image:alt" content="Sinema — Movies & TV Shows" />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://sinema.app" />
+
+    <!-- Preconnect -->
     <link rel="preconnect" href="https://image.tmdb.org" />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Unbounded:wght@500;600;700;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="./apple-touch-icon.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./favicon-16x16.png"
-    />
+
+    <!-- Preload critical fonts -->
+    <link rel="preload" href="/fonts/space-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/unbounded-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
     <link rel="manifest" href="./manifest.json" />
+
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Sinema",
+        "url": "https://sinema.app",
+        "description": "Discover, search and explore thousands of movies and TV shows. Your all-in-one entertainment hub.",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://sinema.app/search/{search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    </script>
+
     <title>Sinema — Movies & TV Shows, Ultra Fast</title>
   </head>
   <body>
     <div id="root"></div>
+    <noscript>
+      <div style="padding:2rem;text-align:center;color:#e2e8f0;background:#12061e;min-height:100vh;font-family:sans-serif;">
+        <h1>Sinema</h1>
+        <p>Please enable JavaScript to use Sinema — your fast movie &amp; TV show explorer.</p>
+      </div>
+    </noscript>
     <script>
       (function () {
         try {

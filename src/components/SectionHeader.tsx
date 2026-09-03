@@ -16,7 +16,7 @@ const SectionHeader = ({ title, viewAll }: SectionHeaderProps) => {
       {viewAll && (
         <Link
           to={viewAll}
-          className="group inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-pink-500"
+          className="group inline-flex items-center gap-1 text-sm font-medium text-muted-foreground transition-colors hover:text-yellow-400"
         >
           View All
           <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

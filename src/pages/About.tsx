@@ -1,6 +1,11 @@
 import LegalPage from "@/components/LegalPage";
+import { useHead } from "@/hooks/useHead";
 
 const About = () => {
+  useHead({
+    title: "About",
+    description: "Learn about Sinema — a fast, modern web app for discovering, searching and exploring movies and TV shows.",
+  });
   return (
     <LegalPage
       badge="About"

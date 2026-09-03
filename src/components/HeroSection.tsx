@@ -49,10 +49,10 @@ const HeroSection: React.FC<Props> = ({ url }) => {
   };
 
   return (
-    <section className="relative">
+    <section className="relative bg-black dark:bg-transparent">
       {/* ambient blobs */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="animate-blob absolute -left-24 top-10 h-80 w-80 rounded-full bg-pink-600/25 blur-[100px]" />
+        <div className="animate-blob absolute -left-24 top-10 h-80 w-80 rounded-full bg-yellow-400/25 blur-[100px]" />
         <div
           className="animate-blob absolute right-0 top-1/3 h-96 w-96 rounded-full bg-violet-600/25 blur-[110px]"
           style={{ animationDelay: "-4s" }}
@@ -119,16 +119,17 @@ const HeroSection: React.FC<Props> = ({ url }) => {
         <CarouselContent className="m-0">
           {movies?.map((item: ApiList, i: number) => (
             <CarouselItem key={item.id} className="p-0">
-              <div className="relative h-[100dvh] min-h-[420px] w-full overflow-hidden sm:h-[calc(100dvh-4rem)] sm:min-h-[560px]">
+              <div className="relative h-[100dvh] min-h-[420px] w-full overflow-hidden sm:h-[calc(100dvh-3rem)] sm:min-h-[560px]">
                 <img
-                  src={tmdbImage(item.backdrop_path, "w1280")}
+                  src={tmdbImage(item.backdrop_path, "w780")}
                   alt={item.title || item.name}
                   loading={i === 0 ? "eager" : "lazy"}
                   decoding="async"
+                  fetchPriority={i === 0 ? "high" : "low"}
                   className="h-full w-full object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-background/20" />
-                <div className="absolute inset-0 bg-gradient-to-r from-background/80 via-transparent to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-black/20 dark:from-background dark:via-background/40 dark:to-background/20" />
+                <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-transparent dark:from-background/80" />
                 <div className="absolute inset-x-4 bottom-24 z-10 mx-auto max-w-5xl sm:bottom-32 md:bottom-32 lg:inset-x-12 lg:left-20 lg:mx-0">
                   <AnimatePresence mode="wait">
                     <motion.div
@@ -139,11 +140,11 @@ const HeroSection: React.FC<Props> = ({ url }) => {
                       transition={{ duration: 0.45 }}
                       className="max-w-2xl"
                     >
-                      <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-pink-500">
+                      <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-yellow-400">
                         <TrendingUp className="h-4 w-4" />
                         {item.release_date?.slice(0, 4) || "Trending"}
                       </div>
-                      <h1 className="font-display text-2xl font-extrabold leading-tight sm:text-4xl md:text-6xl">
+                      <h1 className="font-display text-2xl font-extrabold leading-tight sm:text-4xl md:text-6xl text-white">
                         {item.title || item.name}
                       </h1>
                       <p className="mt-3 line-clamp-3 max-w-xl text-sm text-muted-foreground md:text-base">
@@ -198,7 +199,7 @@ const HeroSection: React.FC<Props> = ({ url }) => {
                   <Card
                     onClick={() => navigate(`/movie-info/${item.id}`)}
                     className={cn(
-                      "cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-pink-500/60",
+                      "cursor-pointer overflow-hidden rounded-xl border border-white/10 bg-black/40 backdrop-blur-sm transition-all duration-300 hover:scale-105 hover:border-yellow-400/60",
                     )}
                   >
                     <CardContent className="p-0">

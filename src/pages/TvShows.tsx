@@ -1,10 +1,12 @@
 import { lazy, Suspense } from "react";
+import { useHead } from "@/hooks/useHead";
 import { PageLoader } from "@/components/Loader";
 
 const Header = lazy(() => import("@/components/Header"));
 const Main = lazy(() => import("@/components/Main"));
 
 const TvShows = () => {
+  useHead({ title: "TV Shows" });
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />

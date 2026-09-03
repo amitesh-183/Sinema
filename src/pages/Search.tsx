@@ -3,12 +3,14 @@ import { useNavigate } from "react-router";
 import { Film, SearchX } from "lucide-react";
 import { useSearch } from "@/store/useSearch";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useHead } from "@/hooks/useHead";
 import { PageLoader } from "@/components/Loader";
 
 const Header = lazy(() => import("@/components/Header"));
 const Main = lazy(() => import("@/components/Main"));
 
 const Search = () => {
+  useHead({ title: "Search" });
   const navigate = useNavigate();
   const searchQuery = useSearch((state) => state.searchQuery);
   const setSearchQuery = useSearch((state) => state.setSearchQuery);

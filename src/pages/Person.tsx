@@ -4,6 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { motion } from "motion/react";
 import { ArrowLeft, Calendar, Film, Tv, Star } from "lucide-react";
 import { fetchMovies } from "@/services/api.service";
+import { useHead } from "@/hooks/useHead";
 import { Button } from "@/components/ui/button";
 import { PageLoader } from "@/components/Loader";
 import Pagination from "@/components/Pagination";
@@ -64,6 +65,13 @@ const Person = () => {
   });
 
   const person: PersonDetails | undefined = personData?.data;
+
+  useHead({
+    title: person?.name,
+    description: person?.biography?.slice(0, 160),
+    image: person?.profile_path ? `https://image.tmdb.org/t/p/w500${person.profile_path}` : undefined,
+    type: "profile",
+  });
 
   const allMovies: CreditItem[] = useMemo(
     () =>
@@ -159,11 +167,11 @@ const Person = () => {
             >
               {/* profile photo */}
               <div className="shrink-0">
-                <div className="mx-auto h-[300px] w-[200px] overflow-hidden rounded-2xl border-2 border-white/10 bg-card/60 shadow-xl shadow-black/40 sm:h-[400px] sm:w-[266px]">
+                <div className="mx-auto h-[300px] w-[200px] overflow-hidden rounded-2xl border-2 border-white/10 bg-card/60 shadow-xl shadow-black/40 dark:shadow-black/40 sm:h-[400px] sm:w-[266px]">
                   <img
                     src={
                       person.profile_path
-                        ? tmdbImage(person.profile_path, "w500")
+                        ? tmdbImage(person.profile_path, "w342")
                         : noAvatar
                     }
                     alt={person.name}
@@ -221,7 +229,7 @@ const Person = () => {
                 className={cn(
                   "flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all",
                   activeTab === "movies"
-                    ? "bg-brand-gradient text-white shadow-lg shadow-pink-500/25"
+                    ? "bg-brand-gradient text-white shadow-lg shadow-yellow-400/25"
                     : "border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
                 )}
               >
@@ -238,7 +246,7 @@ const Person = () => {
                 className={cn(
                   "flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-semibold transition-all",
                   activeTab === "tv"
-                    ? "bg-brand-gradient text-white shadow-lg shadow-pink-500/25"
+                    ? "bg-brand-gradient text-white shadow-lg shadow-yellow-400/25"
                     : "border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10"
                 )}
               >
@@ -267,13 +275,13 @@ const Person = () => {
                     whileHover={{ y: -6, scale: 1.02 }}
                     transition={{ type: "spring", stiffness: 300, damping: 22 }}
                     onClick={() => navigateToDetail(item)}
-                    className="group cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-card/60 shadow-lg shadow-black/30 backdrop-blur-sm transition-shadow hover:shadow-pink-500/20"
+                    className="group cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-card/60 shadow-lg shadow-black/30 backdrop-blur-sm transition-shadow hover:shadow-xl hover:shadow-yellow-400/20"
                   >
                     <div className="relative aspect-[2/3] overflow-hidden">
                       <img
                         src={
                           item.poster_path
-                            ? tmdbImage(item.poster_path)
+                            ? tmdbImage(item.poster_path, "w342")
                             : noPoster
                         }
                         alt={item.title || item.name}

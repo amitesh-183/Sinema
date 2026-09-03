@@ -1,5 +1,6 @@
 import { lazy, Suspense } from "react";
 import { PageLoader } from "@/components/Loader";
+import { useHead } from "@/hooks/useHead";
 
 const Header = lazy(() => import("@/components/Header"));
 const HeroSection = lazy(() => import("@/components/HeroSection"));
@@ -8,6 +9,7 @@ const Tv = lazy(() => import("@/components/Home/Tv"));
 const Footer = lazy(() => import("@/components/Footer"));
 
 const Home = () => {
+  useHead();
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />

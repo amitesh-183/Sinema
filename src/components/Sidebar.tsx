@@ -12,10 +12,30 @@ import { cn } from "@/lib/utils";
 
 const LINKS = [
   { to: "/", label: "Browse", icon: Compass, match: (p: string) => p === "/" },
-  { to: "/genres", label: "Genres", icon: Film, match: (p: string) => p.includes("/genres") },
-  { to: "/upload", label: "Your Movies", icon: Upload, match: (p: string) => p.includes("/upload") },
-  { to: "/community", label: "Community", icon: Users, match: (p: string) => p.includes("/community") },
-  { to: "/analytics", label: "Analytics", icon: LineChart, match: (p: string) => p.includes("/analytics") },
+  {
+    to: "/genres",
+    label: "Genres",
+    icon: Film,
+    match: (p: string) => p.includes("/genres"),
+  },
+  {
+    to: "/upload",
+    label: "Your Movies",
+    icon: Upload,
+    match: (p: string) => p.includes("/upload"),
+  },
+  {
+    to: "/community",
+    label: "Community",
+    icon: Users,
+    match: (p: string) => p.includes("/community"),
+  },
+  {
+    to: "/analytics",
+    label: "Analytics",
+    icon: LineChart,
+    match: (p: string) => p.includes("/analytics"),
+  },
 ];
 
 const Sidebar = () => {
@@ -27,10 +47,10 @@ const Sidebar = () => {
           to="/"
           className="mb-4 flex items-center gap-2 px-2 font-display text-lg font-bold"
         >
-          <div className="rounded-xl bg-brand-gradient p-1.5">
+          <div className="rounded-xl p-1.5">
             <Clapperboard className="h-5 w-5 text-white" />
           </div>
-          Sine<span className="text-gradient">ma</span>
+          Sinema
         </Link>
         <nav className="grid gap-1">
           {LINKS.map(({ to, label, icon: Icon, match }) => {
@@ -43,7 +63,7 @@ const Sidebar = () => {
                   "relative flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                   active
                     ? "text-white"
-                    : "text-muted-foreground hover:text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
                 )}
               >
                 {active && (

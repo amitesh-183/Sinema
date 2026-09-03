@@ -1,6 +1,7 @@
 import { lazy, Suspense } from "react";
 import { useParams } from "react-router";
 import { useGenre } from "@/store/useGenre";
+import { useHead } from "@/hooks/useHead";
 import { PageLoader } from "@/components/Loader";
 
 const Header = lazy(() => import("@/components/Header"));
@@ -9,6 +10,7 @@ const Main = lazy(() => import("@/components/Main"));
 const Movies = () => {
   const { genre } = useParams();
   const genres = useGenre((state) => state.genres);
+  useHead({ title: genre ? `Movies — ${genre}` : "Movies" });
   return (
     <Suspense fallback={<PageLoader />}>
       <Header />

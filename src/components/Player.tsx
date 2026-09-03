@@ -186,7 +186,7 @@ const Player = () => {
               <div className="pointer-events-auto bg-gradient-to-t from-black/85 via-black/50 to-transparent p-3 sm:p-4 sm:pt-10">
                 <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-2 rounded-2xl border border-white/10 bg-black/60 p-2 backdrop-blur-md sm:gap-3 sm:px-3 sm:py-2">
                   <div className="hidden items-center gap-2 pl-1 sm:flex">
-                    <MonitorPlay className="h-4 w-4 text-pink-500" />
+                    <MonitorPlay className="h-4 w-4 text-yellow-400" />
                     <p className="text-xs font-medium text-white/70">
                       {captionsOn
                         ? `Captions: ${activeLang?.label}`
@@ -205,14 +205,14 @@ const Player = () => {
                         className={cn(
                           "flex h-8 items-center gap-1 rounded-full border px-2 text-[11px] font-semibold transition-colors sm:h-9 sm:gap-1.5 sm:px-3 sm:text-xs",
                           captionsOn
-                            ? "border-pink-500/40 bg-pink-500/10 text-white"
+                            ? "border-yellow-400/40 bg-yellow-400/10 text-white"
                             : "border-white/15 text-white/60 hover:bg-white/10",
                         )}
                       >
                         <Captions
                           className={cn(
                             "h-3.5 w-3.5 sm:h-4 sm:w-4",
-                            captionsOn ? "text-pink-400" : "text-white/40",
+                            captionsOn ? "text-yellow-400" : "text-white/40",
                           )}
                         />
                         <span className="hidden sm:inline">{activeLang?.emoji}</span>

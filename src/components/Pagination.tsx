@@ -55,7 +55,7 @@ const Pagination = ({ page, totalPages, onChange }: PaginationProps) => {
             className={cn(
               "h-9 min-w-9 rounded-full px-2.5 text-sm font-semibold transition-all sm:h-10 sm:min-w-10 sm:px-3",
               item === page
-                ? "bg-brand-gradient text-white shadow-lg shadow-pink-500/25"
+                ? "bg-brand-gradient text-white shadow-lg shadow-yellow-400/25"
                 : "border border-white/10 bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-foreground"
             )}
           >

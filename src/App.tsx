@@ -5,22 +5,21 @@ import {
   useLocation,
 } from "react-router";
 import { motion } from "motion/react";
-import { useEffect } from "react";
-import Home from "./pages/Home";
-import Search from "./pages/Search";
-import Genres from "./pages/Genres";
-import Community from "./pages/Community";
-import Upload from "./pages/Upload";
-import Analytics from "./pages/Analytics";
-import Movies from "./pages/Movies";
-import Player from "./components/Player";
-import TvShows from "./pages/TvShows";
-import Details from "./pages/Details";
-import Person from "./pages/Person";
-import Error from "./pages/Error";
-import About from "./pages/About";
-import Privacy from "./pages/Privacy";
-import Terms from "./pages/Terms";
+import { Suspense, lazy, useEffect } from "react";
+import { PageLoader } from "@/components/Loader";
+
+const Home = lazy(() => import("./pages/Home"));
+const Search = lazy(() => import("./pages/Search"));
+const Genres = lazy(() => import("./pages/Genres"));
+const Movies = lazy(() => import("./pages/Movies"));
+const Player = lazy(() => import("./components/Player"));
+const TvShows = lazy(() => import("./pages/TvShows"));
+const Details = lazy(() => import("./pages/Details"));
+const Person = lazy(() => import("./pages/Person"));
+const Error = lazy(() => import("./pages/Error"));
+const About = lazy(() => import("./pages/About"));
+const Privacy = lazy(() => import("./pages/Privacy"));
+const Terms = lazy(() => import("./pages/Terms"));
 
 import "./App.css";
 
@@ -34,7 +33,9 @@ const AnimatedOutlet = () => {
       transition={{ duration: 0.25, ease: "easeOut" }}
       className="flex min-h-screen flex-col"
     >
-      <Outlet />
+      <Suspense fallback={<PageLoader />}>
+        <Outlet />
+      </Suspense>
     </motion.div>
   );
 };
@@ -58,9 +59,6 @@ const router = createBrowserRouter([
       { path: "/search", element: <Search /> },
       { path: "/search/:searchTerm", element: <Search /> },
       { path: "/genres", element: <Genres /> },
-      { path: "/upload", element: <Upload /> },
-      { path: "/community", element: <Community /> },
-      { path: "/analytics", element: <Analytics /> },
       { path: "/movies/:genre", element: <Movies /> },
       { path: "/movies", element: <Movies /> },
       { path: "/movie-info/:movieId", element: <Details /> },
