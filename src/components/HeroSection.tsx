@@ -18,13 +18,14 @@ import { useSearch } from "@/store/useSearch";
 import { ApiList } from "@/types/types";
 import { tmdbImage } from "@/lib/tmdb";
 import { cn } from "@/lib/utils";
+import { HeroSkeleton } from "./Loader";
 
 type Props = {
   url: string;
 };
 
 const HeroSection: React.FC<Props> = ({ url }) => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [url],
     queryFn: () => fetchMovies(url),
     staleTime: 5 * 60 * 1000,
@@ -110,14 +111,17 @@ const HeroSection: React.FC<Props> = ({ url }) => {
       </div>
 
       {/* main hero carousel */}
-      <Carousel
-        plugins={[plugin.current]}
-        onMouseEnter={plugin.current.stop}
-        onMouseLeave={plugin.current.reset}
-        className="group/carousel"
-      >
-        <CarouselContent className="m-0">
-          {movies?.map((item: ApiList, i: number) => (
+      {isLoading ? (
+        <HeroSkeleton />
+      ) : (
+        <Carousel
+          plugins={[plugin.current]}
+          onMouseEnter={plugin.current.stop}
+          onMouseLeave={plugin.current.reset}
+          className="group/carousel"
+        >
+          <CarouselContent className="m-0">
+            {movies?.map((item: ApiList, i: number) => (
             <CarouselItem key={item.id} className="p-0">
               <div className="relative h-[100dvh] min-h-[420px] w-full overflow-hidden sm:h-[calc(100dvh-3rem)] sm:min-h-[560px]">
                 <img
@@ -182,9 +186,10 @@ const HeroSection: React.FC<Props> = ({ url }) => {
                 </div>
               </div>
             </CarouselItem>
-          ))}
-        </CarouselContent>
-      </Carousel>
+            ))}
+          </CarouselContent>
+        </Carousel>
+      )}
 
       {/* thumbnail strip */}
       <div className="absolute inset-x-0 bottom-4 z-10 ml-auto lg:block w-full max-w-4xl px-4 hidden">

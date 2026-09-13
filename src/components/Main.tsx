@@ -76,9 +76,7 @@ const Main: React.FC<Props> = ({
           </p>
         </div>
       ) : isLoading ? (
-        <div className="flex justify-center items-center w-full">
-          <MovieGridSkeleton count={12} />
-        </div>
+        <MovieGridSkeleton count={12} />
       ) : (
         <>
           <div

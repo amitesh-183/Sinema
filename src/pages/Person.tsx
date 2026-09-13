@@ -121,10 +121,10 @@ const Person = () => {
       {personLoading ? (
         <div className="pt-16">
           <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-            <div className="flex flex-col gap-8 md:flex-row">
+            <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
               <div className="skeleton-shimmer h-[300px] w-[200px] shrink-0 rounded-2xl sm:h-[400px] sm:w-[266px]" />
-              <div className="flex-1 space-y-4 pt-4">
-                <div className="skeleton-shimmer h-8 w-64 rounded-lg" />
+              <div className="flex w-full flex-1 flex-col items-center space-y-4 pt-4 md:items-start">
+                <div className="skeleton-shimmer h-8 w-64 max-w-full rounded-lg" />
                 <div className="skeleton-shimmer h-4 w-32 rounded-lg" />
                 <div className="skeleton-shimmer h-4 w-48 rounded-lg" />
                 <div className="space-y-2 pt-4">

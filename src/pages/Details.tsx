@@ -133,7 +133,7 @@ const Details = () => {
           <div className="relative mx-auto w-full max-w-6xl px-4 sm:px-4 md:px-10">
             <div className="-mt-20 grid gap-6 sm:-mt-24 md:-mt-32 md:gap-8 md:grid-cols-12">
               <div className="md:col-span-3">
-                <div className="skeleton-shimmer mx-auto w-28 rounded-2xl sm:w-36 md:mx-0 md:w-full md:aspect-[2/3]" />
+                <div className="skeleton-shimmer mx-auto aspect-[2/3] w-28 rounded-2xl sm:w-36 md:mx-0 md:w-full" />
               </div>
               <div className="md:col-span-9 space-y-4">
                 <div className="skeleton-shimmer h-7 w-3/4 rounded-full sm:h-9 md:h-12" />
